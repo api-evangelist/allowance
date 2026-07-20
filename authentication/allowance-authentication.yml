@@ -1,0 +1,29 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/allowance-openapi-original.json
+summary:
+  types:
+  - apiKey
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: X-Allowance-Key
+  description: API key with prefix alw_. Contact hello@useallowance.com for early access.
+  sources:
+  - openapi/allowance-openapi-original.json
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://useallowance.com/oauth/authorize
+    tokenUrl: https://useallowance.com/oauth/token
+    scopes: 3
+  description: OAuth2 authorization code flow (planned — not yet active)
+  sources:
+  - openapi/allowance-openapi-original.json
