@@ -1,0 +1,56 @@
+generated: '2026-07-17'
+method: searched
+source: openapi/allowance-openapi-original.json
+docs: https://useallowance.com/openapi.json
+authentication:
+  style: api-key-header
+  header: X-Allowance-Key
+  key_prefix: alw_
+  oauth2: planned (authorizationCode flow declared, not-yet-active)
+  see: authentication/allowance-authentication.yml
+idempotency:
+  supported: true
+  header: Idempotency-Key
+  max_length: 255
+  scope: credential requests (and mandate creation); always set on credential requests
+  behavior: >-
+    Client-generated unique key; the same key returns the same response without
+    re-executing the operation. Prevents duplicate virtual-card issuance on retries.
+pagination:
+  supported: false
+  note: No list/collection endpoints in the current spec; resources are fetched by id.
+identifiers:
+  scheme: prefixed-ids
+  prefixes:
+    mandate: mnd_
+    credential_request: cr_
+    api_key: alw_
+    agent: agent_
+amounts:
+  representation: integer-minor-units
+  note: All monetary amounts are integers in minor currency units (cents for USD). Never use floats.
+  currency: ISO 4217 (^[A-Z]{3}$)
+metadata:
+  supported: true
+  shape: up to 10 key-value string pairs on mandates and credential requests
+versioning:
+  style: uri-path
+  current: v1
+rate_limiting:
+  standard: 100 requests/minute per API key
+  credential_requests: 10 requests/minute per API key
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After]
+  see: rate-limits/
+error_envelope:
+  format: custom-json
+  shape: '{ "error": { "code", "message", "param"?, "doc_url"? } }'
+  see: errors/allowance-problem-types.yml
+approval_model:
+  note: >-
+    Mandate creation returns pending_approval; the human owner approves out-of-band via the
+    iOS app. Agents poll GET /v1/mandates/{id} until status is active before requesting
+    credentials. Credential validation is automatic (no human step at purchase time).
+ap2:
+  compatible: true
+  mapping: AllowanceMandate maps to AP2 Intent Mandate (human-not-present)
+  spec: https://ap2-protocol.org/specification/

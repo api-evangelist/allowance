@@ -1,0 +1,19 @@
+generated: '2026-07-17'
+method: searched
+host: https://useallowance.com
+documents:
+- path: /.well-known/ai-plugin.json
+  status: 200
+  file: allowance-ai-plugin.json
+- path: /.well-known/security.txt
+  status: 404
+- path: /.well-known/openid-configuration
+  status: 404
+- path: /.well-known/oauth-authorization-server
+  status: 404
+- path: /.well-known/api-catalog
+  status: 404
+api_host: https://api.useallowance.com
+api_host_documents:
+- path: /.well-known/security.txt
+  status: 404

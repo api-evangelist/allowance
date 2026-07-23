@@ -1,0 +1,18 @@
+{
+  "provider": "allowance",
+  "sources": [
+    "allowance-mandates-api-openapi.yml",
+    "allowance-pricing-api-openapi.yml",
+    "allowance-status-api-openapi.yml"
+  ],
+  "outputs": [
+    "allowance-mandates-api-openapi.yml",
+    "allowance-pricing-api-openapi.yml",
+    "allowance-status-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

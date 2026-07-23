@@ -1,0 +1,40 @@
+generated: '2026-07-17'
+method: searched
+source: https://useallowance.com/SKILL.md
+envelope_field: error-code (allowance purchase failure --error-code)
+notes: >-
+  Purchase-outcome / decline codes an agent reports back to Allowance after a checkout
+  attempt via `allowance purchase failure --error-code <code>`. Captured verbatim from the
+  provider-published SKILL.md. These complement the API-level errors in
+  allowance-problem-types.yml.
+decline_codes:
+- code: card_declined
+  meaning: The issued virtual card was declined at the network level.
+  action: Report failure; do not retry without a new approval.
+- code: card_declined_avs
+  meaning: Card declined due to address verification (AVS) mismatch.
+  action: Report failure; verify billing address before any re-attempt.
+- code: card_declined_cvv
+  meaning: Card declined due to CVV mismatch.
+  action: Report failure; do not retry the same card.
+- code: checkout_abandoned
+  meaning: Checkout was not completed.
+  action: Report failure.
+- code: checkout_error
+  meaning: An error occurred during checkout.
+  action: Report failure.
+- code: checkout_timeout
+  meaning: Checkout did not complete within the allowed time.
+  action: Report failure.
+- code: item_unavailable
+  meaning: The item was not available for purchase.
+  action: Report failure; consider a delayed-purchase monitor.
+- code: merchant_rejected
+  meaning: The merchant rejected the transaction.
+  action: Report failure.
+- code: price_mismatch
+  meaning: The realized price did not match the approved amount.
+  action: Report failure; request a new approval if the price changed.
+- code: unsupported_card
+  meaning: The merchant does not support the issued card.
+  action: Report failure.

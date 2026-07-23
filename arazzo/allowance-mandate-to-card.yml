@@ -1,0 +1,72 @@
+arazzo: 1.0.1
+info:
+  title: Approve a mandate and issue a virtual card
+  version: 1.0.0
+  summary: >-
+    Create a spending mandate, wait for the human owner to approve it, then request a
+    single-use virtual card for a specific purchase against the active mandate.
+sourceDescriptions:
+- name: allowanceApi
+  url: ../openapi/allowance-openapi-original.json
+  type: openapi
+workflows:
+- workflowId: mandateToCard
+  summary: Propose a mandate, poll for approval, and request a payment credential.
+  description: >-
+    Mirrors the Allowance agent flow: POST a mandate (pending_approval), poll GET the
+    mandate until the human approves it (active), then POST a credential request to receive
+    a single-use virtual card. All endpoints are pre-launch and return 501 until launch.
+  inputs:
+    type: object
+    properties:
+      agent_id:
+        type: string
+      merchant:
+        type: string
+      amount:
+        type: integer
+        description: Amount in minor units (cents).
+  steps:
+  - stepId: createMandate
+    operationId: createMandate
+    requestBody:
+      contentType: application/json
+      payload:
+        agent_id: $inputs.agent_id
+        budget:
+          cadence: once
+          per_transaction_max: $inputs.amount
+          currency: USD
+          merchants:
+          - $inputs.merchant
+    outputs:
+      mandate_id: $response.body#/id
+  - stepId: pollApproval
+    operationId: getMandate
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createMandate.outputs.mandate_id
+    successCriteria:
+    - condition: $response.body#/status == 'active'
+    outputs:
+      status: $response.body#/status
+  - stepId: requestCredential
+    operationId: requestCredential
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createMandate.outputs.mandate_id
+    requestBody:
+      contentType: application/json
+      payload:
+        amount: $inputs.amount
+        currency: USD
+        merchant: $inputs.merchant
+        context: Purchase authorized via approved Allowance mandate.
+    outputs:
+      credential_request_id: $response.body#/id
+      passed: $response.body#/validation/passed
+  outputs:
+    mandate_id: $steps.createMandate.outputs.mandate_id
+    credential_request_id: $steps.requestCredential.outputs.credential_request_id

@@ -1,0 +1,38 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/allowance-openapi-original.json
+entities:
+- name: AllowanceMandate
+  id_prefix: mnd_
+  description: A permission object for AI spending — budget, merchant/category/time restrictions, risk controls, and lifecycle status.
+  key_fields: [id, owner_id, agent_id, budget, status, created_at]
+  embeds: [AllowanceBudget]
+- name: CredentialRequest
+  id_prefix: cr_
+  description: A request to execute a specific purchase against an active mandate; carries the automatic validation result and, if approved, the virtual card.
+  key_fields: [id, mandate_id, amount, currency, merchant, validation, status, created_at]
+  embeds: [ValidationResult, VirtualCard]
+- name: VirtualCard
+  id_prefix: null
+  description: A single-use, amount-capped, merchant-locked, short-lived virtual card returned when a credential request is approved.
+  key_fields: [pan, expiry_month, expiry_year, cvv, billing_zip, network, expires_at, single_use]
+- name: AllowanceBudget
+  id_prefix: null
+  description: Embedded budget/rules object on a mandate (cadence, per_transaction_max, total_max, currency, merchants, MCCs, expiry).
+relationships:
+- from: CredentialRequest
+  to: AllowanceMandate
+  kind: belongs_to
+  via: mandate_id
+- from: AllowanceMandate
+  to: CredentialRequest
+  kind: has_many
+  via: mandate_id
+- from: CredentialRequest
+  to: VirtualCard
+  kind: has_one
+  via: virtual_card
+- from: AllowanceMandate
+  to: AllowanceBudget
+  kind: has_one
+  via: budget

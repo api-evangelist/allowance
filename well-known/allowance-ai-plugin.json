@@ -1,0 +1,21 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Allowance",
+  "name_for_model": "allowance",
+  "description_for_human": "Give your AI assistant safe, limited spending power. Set budgets, merchant rules, and expiry — then let your AI handle purchases.",
+  "description_for_model": "Allowance is a consumer trust layer between AI agents and payment systems. Agents interact with Allowance to create spending mandates (permission objects with budget, merchant restrictions, and time limits), submit payment intents for approval, and receive decisions on whether a purchase is within the allowed rules. The agent never sees a card number. All amounts are in minor units (cents). Pre-launch: API endpoints are stubs and return 501 Not Implemented. Use this manifest to understand capabilities and prepare integrations.",
+  "auth": {
+    "type": "service_http",
+    "authorization_type": "bearer",
+    "verification_tokens": {}
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://useallowance.com/openapi.json"
+  },
+  "logo_url": "https://useallowance.com/assets/logo.png",
+  "contact_email": "hello@useallowance.com",
+  "legal_info_url": "https://useallowance.com/",
+  "status": "pre-launch",
+  "status_url": "https://useallowance.com/status.json"
+}

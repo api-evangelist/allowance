@@ -1,0 +1,8 @@
+generated: '2026-07-17'
+method: derived
+source: arazzo/allowance-mandate-to-card.yml
+workflows:
+- file: allowance-mandate-to-card.yml
+  workflowId: mandateToCard
+  title: Approve a mandate and issue a virtual card
+  summary: Create a spending mandate, poll for human approval, then request a single-use virtual card for a purchase.

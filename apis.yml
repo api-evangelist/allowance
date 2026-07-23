@@ -1,22 +1,150 @@
 aid: allowance
 name: Allowance
-description: Allowance is a company surfaced as a portfolio company of y-combinator and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Allowance is a consumer trust layer for AI agent payments, backed by Y Combinator.
+  It lets people give AI agents limited, revocable spending power without ever sharing
+  a real credit card number. An agent proposes a spending mandate (a permission object
+  with a budget, merchant and category restrictions, and a time limit); the human owner
+  approves it from the Allowance iOS app; and Allowance then issues single-use virtual
+  cards (PAN, expiry, CVV) that are amount-capped, merchant-locked, and short-lived so
+  the agent can complete checkout autonomously within the approved rules. Allowance
+  exposes a pre-launch OpenAPI 3.1 REST API, a hosted remote MCP server, a published
+  agent SKILL.md, a CLI (PyPI and npm), plus ChatGPT and Claude connectors. The mandate
+  model is designed as a natural precursor to the AP2 Agent Payments Protocol.
 url: https://raw.githubusercontent.com/api-evangelist/allowance/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://useallowance.com/assets/logo.png
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - y-combinator
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: enriched-from-public-surface
 specificationVersion: '0.20'
 created: '2026-07-17'
 modified: '2026-07-17'
 tags:
 - Company
-apis: []
+- Payments
+- Agentic Payments
+- AI Agents
+- Virtual Cards
+- Fintech
+- Model Context Protocol
+- Consumer Trust
+- Spending Controls
+- AP2
+apis:
+- aid: allowance:allowance-mandates-api
+  name: Allowance Mandates API
+  description: The Mandates API from Allowance — 5 operation(s) for mandates.
+  humanURL: https://useallowance.com/connect-agent
+  baseURL: https://api.useallowance.com/v1
+  tags:
+  - Mandates
+  properties:
+  - type: OpenAPI
+    url: openapi/allowance-mandates-api-openapi.yml
+- aid: allowance:allowance-pricing-api
+  name: Allowance Pricing API
+  description: The Pricing API from Allowance — 1 operation(s) for pricing.
+  humanURL: https://useallowance.com/connect-agent
+  baseURL: https://api.useallowance.com/v1
+  tags:
+  - Pricing
+  properties:
+  - type: OpenAPI
+    url: openapi/allowance-pricing-api-openapi.yml
+- aid: allowance:allowance-status-api
+  name: Allowance Status API
+  description: The Status API from Allowance — 1 operation(s) for status.
+  humanURL: https://useallowance.com/connect-agent
+  baseURL: https://api.useallowance.com/v1
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/allowance-status-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: DomainSecurity
+  url: security/allowance-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/allowance-agentic-access.yml
+- type: OAuthScopes
+  url: scopes/allowance-scopes.yml
+- type: Authentication
+  url: authentication/allowance-authentication.yml
+- type: DeveloperPortal
+  url: https://useallowance.com/connect-agent
+- type: Documentation
+  url: https://useallowance.com/connect-agent
+- type: APIReference
+  url: https://useallowance.com/openapi.json
+- type: GettingStarted
+  url: https://useallowance.com/connect-agent
+- type: Support
+  url: https://useallowance.com/support
+- type: Blog
+  url: https://useallowance.com/blog/
+- type: Pricing
+  url: https://useallowance.com/pricing.json
+- type: SignUp
+  url: https://apps.apple.com/us/app/allowance-agent-wallet/id6762312262
+- type: TermsOfService
+  url: https://useallowance.com/terms
+- type: PrivacyPolicy
+  url: https://useallowance.com/privacy
+- type: StatusPage
+  url: https://useallowance.com/status.json
+- type: LLMsTxt
+  url: llms/allowance-llms.txt
+- type: MCPServer
+  url: mcp/allowance-mcp.yml
+- type: AgentSkill
+  url: skills/allowance-purchase.md
+- type: Packages
+  url: packages/allowance-packages.yml
+- type: CLI
+  url: cli/allowance-cli.yml
+- type: WellKnown
+  url: well-known/allowance-well-known.yml
+- type: Conformance
+  url: conformance/allowance-conformance.yml
+- type: ErrorCatalog
+  url: errors/allowance-problem-types.yml
+- type: DeclineCodes
+  url: errors/allowance-decline-codes.yml
+- type: Lifecycle
+  url: lifecycle/allowance-lifecycle.yml
+- type: Conventions
+  url: conventions/allowance-conventions.yml
+- type: Idempotency
+  url: conventions/allowance-conventions.yml
+- type: DataModel
+  url: data-model/allowance-data-model.yml
+- type: Webhooks
+  url: asyncapi/allowance-webhooks.yml
+- type: Arazzo
+  name: Approve a mandate and issue a virtual card
+  url: arazzo/allowance-mandate-to-card.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

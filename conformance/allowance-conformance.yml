@@ -1,0 +1,28 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/allowance-openapi-original.json
+standards:
+- id: oauth2
+  conforms: true
+  evidence: openapi securitySchemes declares an OAuth2 authorizationCode flow (planned/not-yet-active) with 3 scopes
+- id: apikey-auth
+  conforms: true
+  evidence: primary security scheme ApiKeyAuth, X-Allowance-Key header, key prefix alw_
+- id: idempotency
+  conforms: true
+  evidence: Idempotency-Key request header defined and required on credential requests
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors use a custom application/json envelope {error:{code,message,param,doc_url}}, not application/problem+json
+- id: ap2-agent-payments-protocol
+  conforms: true
+  evidence: x-ap2.compatible true; AllowanceMandate maps to AP2 Intent Mandate; spec_url https://ap2-protocol.org/specification/
+- id: iso-4217-currency
+  conforms: true
+  evidence: currency fields constrained to ^[A-Z]{3}$
+- id: iso-18245-mcc
+  conforms: true
+  evidence: merchant_category_code fields constrained to ^[0-9]{4}$ (4-digit MCC)
+- id: rate-limit-headers
+  conforms: true
+  evidence: X-RateLimit-Limit / X-RateLimit-Remaining / X-RateLimit-Reset and Retry-After documented

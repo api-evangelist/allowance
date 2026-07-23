@@ -1,0 +1,25 @@
+generated: '2026-07-17'
+method: searched
+source: https://useallowance.com/status.json
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://api.useallowance.com/v1
+release_stage: pre-launch
+release_note: >-
+  All API endpoints return 501 Not Implemented. Spec version 0.1.0-pre-launch. Contact
+  hello@useallowance.com for early access.
+status_page: https://useallowance.com/status.json
+status_components:
+- api
+- payment_processing
+- mandate_engine
+- webhooks
+sla:
+  in_effect: false
+  note: Uptime SLA will be published at launch. No SLA is in effect during pre-launch.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No deprecation policy or Sunset/Deprecation header support published (pre-launch).
+deprecated_operations: []

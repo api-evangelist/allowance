@@ -1,0 +1,724 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Allowance API",
+    "version": "0.1.0-pre-launch",
+    "description": "Consumer trust layer for AI agent payments.\n\n## How it works\n\n1. **Agent proposes a mandate.** The agent calls `POST /v1/mandates` with a suggested amount, merchant, and cadence. The mandate starts in `pending_approval` status.\n2. **Human approves the mandate.** The mandate owner receives a notification (push, email, or in-app) and approves it. The mandate becomes `active`. The agent never triggers this step — it waits.\n3. **Agent requests a virtual card.** When a purchase is needed, the agent calls `POST /v1/mandates/{id}/credential-requests`. Allowance automatically validates the request against the mandate rules (amount, merchant, time period). No human involvement. If valid, a single-use virtual card (PAN, expiry, CVV) is returned — the agent uses it like a card number at checkout. If not, the request is denied with reasons.\n4. **Mandate lifecycle.** For `cadence: \"once\"` (immediate) mandates, the mandate auto-expires after the first virtual card is issued. For recurring mandates, the mandate stays active and the agent can request a new virtual card on each purchase cycle within the defined rules.\n\n## AP2 compatibility\n\nThis API is designed to be a natural precursor to the [AP2 Agent Payments Protocol](https://ap2-protocol.org). The Allowance mandate maps directly to AP2's Intent Mandate (human-not-present scenario). In a future AP2-compatible version, the mandate will be a cryptographically signed Verifiable Digital Credential (VDC), and human approval will produce a non-repudiable cryptographic attestation rather than an in-system state change. The same concepts and fields carry forward.\n\n**Status: Pre-launch.** All endpoints return `501 Not Implemented`. Contact hello@useallowance.com for early access.",
+    "contact": {
+      "name": "Allowance",
+      "email": "hello@useallowance.com",
+      "url": "https://useallowance.com/"
+    },
+    "x-pre-launch": true,
+    "x-status-url": "https://useallowance.com/status.json",
+    "x-ap2-compatible": true
+  },
+  "servers": [
+    {
+      "url": "https://api.useallowance.com/v1",
+      "description": "Production (pre-launch — not yet active)"
+    }
+  ],
+  "security": [
+    { "ApiKeyAuth": [] }
+  ],
+  "paths": {
+    "/mandates": {
+      "post": {
+        "operationId": "createMandate",
+        "summary": "Propose a spending mandate",
+        "description": "The agent proposes a mandate with a suggested budget, merchant restrictions, and cadence. The mandate is created with `status: pending_approval` and is not usable until the human owner approves it out-of-band (via push notification, email, or in-app review). The agent should poll `GET /v1/mandates/{id}` to detect when status becomes `active`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateMandateRequest" },
+              "examples": {
+                "flight": { "$ref": "#/components/examples/FlightMandate" },
+                "household": { "$ref": "#/components/examples/HouseholdMandate" },
+                "subscriptions": { "$ref": "#/components/examples/SubscriptionMandate" }
+              }
+            }
+          }
+        },
+        "parameters": [
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "responses": {
+          "201": {
+            "description": "Mandate created in `pending_approval` status",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AllowanceMandate" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "501": { "$ref": "#/components/responses/NotImplemented" }
+        }
+      }
+    },
+    "/mandates/{id}": {
+      "get": {
+        "operationId": "getMandate",
+        "summary": "Retrieve a mandate",
+        "description": "Poll this endpoint to check whether the human has approved the mandate (`status: active`). Also use it to check remaining budget and expiry before requesting a credential.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^mnd_" },
+            "description": "Mandate ID (prefix: mnd_)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mandate retrieved",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AllowanceMandate" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "501": { "$ref": "#/components/responses/NotImplemented" }
+        }
+      }
+    },
+    "/mandates/{id}/revoke": {
+      "post": {
+        "operationId": "revokeMandate",
+        "summary": "Revoke a mandate",
+        "description": "Immediately revoke an active or pending_approval mandate. Once revoked, no further credential requests will be accepted. Any virtual cards already issued remain valid until their own expires_at — revocation does not cancel in-flight transactions. Only callable by the mandate owner, not the agent.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^mnd_" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mandate revoked",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AllowanceMandate" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "501": { "$ref": "#/components/responses/NotImplemented" }
+        }
+      }
+    },
+    "/mandates/{id}/credential-requests": {
+      "post": {
+        "operationId": "requestCredential",
+        "summary": "Request a payment credential",
+        "description": "Request a single-use virtual card to execute a specific purchase against an active mandate. Allowance automatically validates the request against the mandate rules — amount, merchant, merchant category, and time period. No human approval is needed at this step; the human already approved the mandate.\n\nIf validation passes, a virtual card (PAN, expiry, CVV) is returned. The agent uses these details at merchant checkout like a normal card number. The card is single-use, amount-capped, and short-lived — safety comes from these constraints, not from hiding credentials.\n\nFor `cadence: \"once\"` mandates, the mandate automatically moves to `exhausted` status after the first virtual card is issued.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^mnd_" }
+          },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateCredentialRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Credential request processed. Check `validation.passed` for the outcome.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CredentialRequest" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "409": {
+            "description": "Mandate is not active (pending_approval, expired, revoked, or exhausted)",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+            }
+          },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "501": { "$ref": "#/components/responses/NotImplemented" }
+        },
+        "x-rate-limit": "10 requests/minute per API key"
+      }
+    },
+    "/mandates/{id}/credential-requests/{cr_id}": {
+      "get": {
+        "operationId": "getCredentialRequest",
+        "summary": "Retrieve a credential request",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^mnd_" }
+          },
+          {
+            "name": "cr_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^cr_" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential request retrieved",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CredentialRequest" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "501": { "$ref": "#/components/responses/NotImplemented" }
+        }
+      }
+    },
+    "/pricing": {
+      "get": {
+        "operationId": "getPricing",
+        "summary": "Retrieve pricing information",
+        "description": "Mirrors https://useallowance.com/pricing.json.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Pricing information",
+            "content": { "application/json": { "schema": { "type": "object" } } }
+          },
+          "501": { "$ref": "#/components/responses/NotImplemented" }
+        }
+      }
+    },
+    "/status": {
+      "get": {
+        "operationId": "getStatus",
+        "summary": "Health check",
+        "description": "Mirrors https://useallowance.com/status.json.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "System status",
+            "content": { "application/json": { "schema": { "type": "object" } } }
+          },
+          "501": { "$ref": "#/components/responses/NotImplemented" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Allowance-Key",
+        "description": "API key with prefix alw_. Contact hello@useallowance.com for early access."
+      },
+      "OAuth2": {
+        "type": "oauth2",
+        "description": "OAuth2 authorization code flow (planned — not yet active)",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://useallowance.com/oauth/authorize",
+            "tokenUrl": "https://useallowance.com/oauth/token",
+            "scopes": {
+              "mandates:write": "Propose and manage spending mandates",
+              "mandates:read": "Read mandate details and status",
+              "credentials:request": "Request payment credentials against active mandates"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": false,
+        "schema": { "type": "string", "maxLength": 255 },
+        "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests."
+      }
+    },
+    "schemas": {
+      "AllowanceBudget": {
+        "type": "object",
+        "required": ["cadence", "per_transaction_max", "currency"],
+        "properties": {
+          "cadence": {
+            "type": "string",
+            "enum": ["once", "daily", "weekly", "monthly", "annually", "never"],
+            "description": "Spending cadence. 'once' = single-use mandate — expires after first credential is issued. 'never' = a lifetime cap that never resets. All others reset per interval."
+          },
+          "per_transaction_max": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Maximum amount per credential request in minor currency units (cents for USD). Example: 50000 = $500.00."
+          },
+          "total_max": {
+            "type": ["integer", "null"],
+            "minimum": 1,
+            "description": "Total cap across all credential requests in minor units. Resets per cadence interval. null = no cap."
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "ISO 4217 currency code."
+          },
+          "merchants": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Allowlist of merchant names. Empty array = no merchant restriction."
+          },
+          "merchant_category_codes": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[0-9]{4}$" },
+            "description": "Allowlist of 4-digit ISO 18245 MCCs. Empty array = no MCC restriction."
+          },
+          "categories": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Semantic category labels. Supplementary to MCC — used for display and audit, not enforcement."
+          },
+          "expires_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Mandate expiry as ISO 8601 datetime. null = no expiry. Always set this for sensitive or one-time tasks."
+          }
+        }
+      },
+      "AllowanceMandate": {
+        "type": "object",
+        "required": ["id", "owner_id", "agent_id", "budget", "status", "created_at"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^mnd_",
+            "description": "Unique mandate ID."
+          },
+          "owner_id": {
+            "type": "string",
+            "description": "ID of the human user who owns and approved this mandate."
+          },
+          "agent_id": {
+            "type": "string",
+            "description": "ID of the AI agent authorized to request credentials under this mandate."
+          },
+          "budget": { "$ref": "#/components/schemas/AllowanceBudget" },
+          "risk_controls": {
+            "type": "object",
+            "properties": {
+              "require_merchant_match": {
+                "type": "boolean",
+                "description": "If true, credential requests must exactly match a merchant in the budget.merchants allowlist."
+              },
+              "block_international": {
+                "type": "boolean",
+                "description": "If true, credential requests for international merchants are denied."
+              },
+              "max_daily_spend": {
+                "type": ["integer", "null"],
+                "description": "Hard daily cap across all credential requests, in minor units."
+              },
+              "velocity_limit_per_hour": {
+                "type": ["integer", "null"],
+                "description": "Maximum number of credential requests allowed per hour."
+              }
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending_approval", "active", "exhausted", "expired", "revoked"],
+            "description": "pending_approval = created, awaiting human approval. active = approved, credential requests accepted. exhausted = once mandate fully used. expired = past expires_at. revoked = manually cancelled."
+          },
+          "approved_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "When the human owner approved the mandate."
+          },
+          "created_at": { "type": "string", "format": "date-time" },
+          "expires_at": { "type": ["string", "null"], "format": "date-time" },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "description": "Up to 10 key-value string pairs. Use to record user instruction, task context, etc."
+          },
+          "x-ap2-note": {
+            "type": "string",
+            "description": "In a future AP2-compatible version, this mandate will be issued as a signed Intent Mandate VDC and approved_at will carry a cryptographic attestation."
+          }
+        }
+      },
+      "CreateMandateRequest": {
+        "type": "object",
+        "required": ["agent_id", "budget"],
+        "properties": {
+          "agent_id": { "type": "string" },
+          "budget": { "$ref": "#/components/schemas/AllowanceBudget" },
+          "risk_controls": {
+            "type": "object",
+            "properties": {
+              "require_merchant_match": { "type": "boolean" },
+              "block_international": { "type": "boolean" },
+              "max_daily_spend": { "type": ["integer", "null"] },
+              "velocity_limit_per_hour": { "type": ["integer", "null"] }
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        }
+      },
+      "CreateCredentialRequest": {
+        "type": "object",
+        "required": ["amount", "currency", "merchant", "context"],
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Requested amount in minor currency units (cents). Example: 47231 = $472.31. Never use floats."
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "merchant": {
+            "type": "string",
+            "description": "Name of the merchant where the purchase will be made."
+          },
+          "merchant_category_code": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$",
+            "description": "4-digit ISO 18245 MCC for the merchant."
+          },
+          "context": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Human-readable explanation of why this purchase is being made. Appears in the owner's transaction log. Be specific — this is the audit trail."
+          },
+          "idempotency_key": {
+            "type": "string",
+            "description": "Always set this. Prevents duplicate credential issuance on retries."
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        }
+      },
+      "CredentialRequest": {
+        "type": "object",
+        "required": ["id", "mandate_id", "amount", "currency", "merchant", "validation", "status", "created_at"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^cr_",
+            "description": "Unique credential request ID."
+          },
+          "mandate_id": {
+            "type": "string",
+            "pattern": "^mnd_"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "Requested amount in minor currency units."
+          },
+          "currency": { "type": "string" },
+          "merchant": { "type": "string" },
+          "merchant_category_code": { "type": "string" },
+          "context": { "type": "string" },
+          "idempotency_key": { "type": "string" },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "validation": { "$ref": "#/components/schemas/ValidationResult" },
+          "virtual_card": {
+            "description": "Single-use virtual card if validation passed, null if denied.",
+            "oneOf": [
+              { "$ref": "#/components/schemas/VirtualCard" },
+              { "type": "null" }
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["approved", "denied", "expired"],
+            "description": "approved = token issued, proceed with purchase. denied = mandate rules not satisfied, do not proceed. expired = mandate expired before this request was evaluated."
+          },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ValidationResult": {
+        "type": "object",
+        "required": ["passed", "constraints", "reasons"],
+        "description": "The system's automatic validation of a credential request against the active mandate rules. No human involvement — this is evaluated instantly.",
+        "properties": {
+          "passed": {
+            "type": "boolean",
+            "description": "Whether all mandate constraints were satisfied."
+          },
+          "constraints": {
+            "type": "object",
+            "description": "Individual constraint checks.",
+            "properties": {
+              "within_amount_limit": {
+                "type": "object",
+                "properties": {
+                  "passed": { "type": "boolean" },
+                  "detail": { "type": "string" }
+                }
+              },
+              "merchant_match": {
+                "type": "object",
+                "properties": {
+                  "passed": { "type": "boolean" },
+                  "detail": { "type": "string" }
+                }
+              },
+              "mcc_match": {
+                "type": "object",
+                "properties": {
+                  "passed": { "type": "boolean" },
+                  "detail": { "type": "string" }
+                }
+              },
+              "within_time_period": {
+                "type": "object",
+                "properties": {
+                  "passed": { "type": "boolean" },
+                  "detail": { "type": "string" }
+                }
+              },
+              "cadence_not_exhausted": {
+                "type": "object",
+                "properties": {
+                  "passed": { "type": "boolean" },
+                  "detail": { "type": "string" }
+                }
+              },
+              "velocity_check": {
+                "type": "object",
+                "properties": {
+                  "passed": { "type": "boolean" },
+                  "detail": { "type": "string" }
+                }
+              }
+            }
+          },
+          "reasons": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Human-readable reasons for the validation outcome. Always populated — useful for logging and debugging."
+          }
+        }
+      },
+      "VirtualCard": {
+        "type": "object",
+        "description": "A single-use virtual card issued when a credential request is approved. The agent uses these details at checkout exactly like a physical card. Safety comes from the card being single-use, amount-capped, merchant-locked, and short-lived — not from hiding credentials.",
+        "required": ["pan", "expiry_month", "expiry_year", "cvv", "billing_zip", "expires_at", "single_use", "network"],
+        "properties": {
+          "pan": {
+            "type": "string",
+            "description": "16-digit card number. Use at merchant checkout."
+          },
+          "expiry_month": {
+            "type": "string",
+            "description": "2-digit expiry month. Example: '09'."
+          },
+          "expiry_year": {
+            "type": "string",
+            "description": "4-digit expiry year. Example: '2026'."
+          },
+          "cvv": {
+            "type": "string",
+            "description": "3-digit security code."
+          },
+          "billing_zip": {
+            "type": "string",
+            "description": "Billing ZIP code for AVS verification."
+          },
+          "network": {
+            "type": "string",
+            "description": "Card network. Example: visa, mastercard."
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this virtual card expires. Short-lived — use immediately. Typically 15 minutes."
+          },
+          "single_use": {
+            "type": "boolean",
+            "description": "Always true. This card is deactivated after one approved transaction regardless of cadence."
+          },
+          "amount_limit": {
+            "type": "integer",
+            "description": "The maximum amount this card will approve, in minor units. Matches the credential request amount. Any charge above this is declined at the network level."
+          },
+          "merchant_lock": {
+            "type": ["string", "null"],
+            "description": "If set, the card is locked to this merchant name. Charges from other merchants are declined at the network level. null if the mandate has no merchant restriction."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message"],
+            "properties": {
+              "code": { "type": "string" },
+              "message": { "type": "string" },
+              "param": { "type": "string" },
+              "doc_url": { "type": "string", "format": "uri" }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid request parameters",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid API key",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "RateLimited": {
+        "description": "Rate limit exceeded",
+        "headers": {
+          "Retry-After": { "schema": { "type": "integer" } },
+          "X-RateLimit-Limit": { "schema": { "type": "integer" } },
+          "X-RateLimit-Remaining": { "schema": { "type": "integer" } }
+        },
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "NotImplemented": {
+        "description": "Pre-launch: this endpoint is not yet active",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" },
+            "example": {
+              "error": {
+                "code": "not_implemented",
+                "message": "Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.",
+                "doc_url": "https://useallowance.com/connect-agent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "FlightMandate": {
+        "summary": "Book a flight under $500 (immediate, once)",
+        "value": {
+          "agent_id": "agent_claude_travel",
+          "budget": {
+            "cadence": "once",
+            "per_transaction_max": 50000,
+            "total_max": 50000,
+            "currency": "USD",
+            "merchants": ["United Airlines"],
+            "merchant_category_codes": ["4511"],
+            "categories": ["travel", "flights"],
+            "expires_at": "2026-02-17T14:30:00Z"
+          },
+          "risk_controls": {
+            "require_merchant_match": true,
+            "block_international": false
+          },
+          "metadata": {
+            "task": "book cheapest flight to NYC under $500",
+            "initiated_by": "user_voice_command"
+          }
+        }
+      },
+      "HouseholdMandate": {
+        "summary": "Reorder household item under $40/month (recurring)",
+        "value": {
+          "agent_id": "agent_household_reorder",
+          "budget": {
+            "cadence": "monthly",
+            "per_transaction_max": 4000,
+            "total_max": null,
+            "currency": "USD",
+            "merchants": ["Amazon"],
+            "merchant_category_codes": ["5912"],
+            "categories": ["household", "consumables"],
+            "expires_at": null
+          },
+          "risk_controls": {
+            "require_merchant_match": true,
+            "block_international": true,
+            "velocity_limit_per_hour": 1
+          },
+          "metadata": {
+            "task": "reorder paper towels when stock is low",
+            "product_asin": "B07N1THQ6Z"
+          }
+        }
+      },
+      "SubscriptionMandate": {
+        "summary": "Pay subscription renewals up to $20/month (recurring, open merchant)",
+        "value": {
+          "agent_id": "agent_subscription_manager",
+          "budget": {
+            "cadence": "monthly",
+            "per_transaction_max": 2000,
+            "total_max": null,
+            "currency": "USD",
+            "merchants": [],
+            "merchant_category_codes": ["7372", "7375", "5815"],
+            "categories": ["subscriptions", "software", "streaming"],
+            "expires_at": null
+          },
+          "risk_controls": {
+            "block_international": false,
+            "velocity_limit_per_hour": 3
+          },
+          "metadata": {
+            "task": "auto-renew approved subscriptions under $20/month"
+          }
+        }
+      }
+    }
+  },
+  "x-rate-limits": {
+    "standard": "100 requests per minute per API key",
+    "credential_requests_post": "10 requests per minute per API key",
+    "headers": ["X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"]
+  },
+  "x-agent-notes": "All monetary amounts are integers in minor currency units (cents for USD). Example: 47231 = $472.31. Never use floats. Always set Idempotency-Key on credential requests. Poll GET /v1/mandates/{id} to detect when a mandate moves from pending_approval to active — do not request credentials until the mandate is active.",
+  "x-ap2": {
+    "compatible": true,
+    "mandate_mapping": "AllowanceMandate → AP2 Intent Mandate (human-not-present scenario)",
+    "future_changes": "Mandate body will be a signed VDC. Human approval will produce a cryptographic attestation. Payment tokens will be AP2 Payment Mandate VDCs.",
+    "spec_url": "https://ap2-protocol.org/specification/"
+  }
+}

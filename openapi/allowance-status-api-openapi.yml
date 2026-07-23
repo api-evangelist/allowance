@@ -1,0 +1,122 @@
+openapi: 3.1.0
+info:
+  title: Allowance Mandates Status API
+  version: 0.1.0-pre-launch
+  description: 'Consumer trust layer for AI agent payments.
+
+
+    ## How it works
+
+
+    1. **Agent proposes a mandate.** The agent calls `POST /v1/mandates` with a suggested amount, merchant, and cadence. The mandate starts in `pending_approval` status.
+
+    2. **Human approves the mandate.** The mandate owner receives a notification (push, email, or in-app) and approves it. The mandate becomes `active`. The agent never triggers this step — it waits.
+
+    3. **Agent requests a virtual card.** When a purchase is needed, the agent calls `POST /v1/mandates/{id}/credential-requests`. Allowance automatically validates the request against the mandate rules (amount, merchant, time period). No human involvement. If valid, a single-use virtual card (PAN, expiry, CVV) is returned — the agent uses it like a card number at checkout. If not, the request is denied with reasons.
+
+    4. **Mandate lifecycle.** For `cadence: "once"` (immediate) mandates, the mandate auto-expires after the first virtual card is issued. For recurring mandates, the mandate stays active and the agent can request a new virtual card on each purchase cycle within the defined rules.
+
+
+    ## AP2 compatibility
+
+
+    This API is designed to be a natural precursor to the [AP2 Agent Payments Protocol](https://ap2-protocol.org). The Allowance mandate maps directly to AP2''s Intent Mandate (human-not-present scenario). In a future AP2-compatible version, the mandate will be a cryptographically signed Verifiable Digital Credential (VDC), and human approval will produce a non-repudiable cryptographic attestation rather than an in-system state change. The same concepts and fields carry forward.
+
+
+    **Status: Pre-launch.** All endpoints return `501 Not Implemented`. Contact hello@useallowance.com for early access.'
+  contact:
+    name: Allowance
+    email: hello@useallowance.com
+    url: https://useallowance.com/
+  x-pre-launch: true
+  x-status-url: https://useallowance.com/status.json
+  x-ap2-compatible: true
+servers:
+- url: https://api.useallowance.com/v1
+  description: Production (pre-launch — not yet active)
+security:
+- ApiKeyAuth: []
+tags:
+- name: Status
+paths:
+  /status:
+    get:
+      operationId: getStatus
+      summary: Health check
+      description: Mirrors https://useallowance.com/status.json.
+      security: []
+      responses:
+        '200':
+          description: System status
+          content:
+            application/json:
+              schema:
+                type: object
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+      tags:
+      - Status
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            param:
+              type: string
+            doc_url:
+              type: string
+              format: uri
+  responses:
+    NotImplemented:
+      description: 'Pre-launch: this endpoint is not yet active'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: not_implemented
+              message: Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.
+              doc_url: https://useallowance.com/connect-agent
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Allowance-Key
+      description: API key with prefix alw_. Contact hello@useallowance.com for early access.
+    OAuth2:
+      type: oauth2
+      description: OAuth2 authorization code flow (planned — not yet active)
+      flows:
+        authorizationCode:
+          authorizationUrl: https://useallowance.com/oauth/authorize
+          tokenUrl: https://useallowance.com/oauth/token
+          scopes:
+            mandates:write: Propose and manage spending mandates
+            mandates:read: Read mandate details and status
+            credentials:request: Request payment credentials against active mandates
+x-rate-limits:
+  standard: 100 requests per minute per API key
+  credential_requests_post: 10 requests per minute per API key
+  headers:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+x-agent-notes: 'All monetary amounts are integers in minor currency units (cents for USD). Example: 47231 = $472.31. Never use floats. Always set Idempotency-Key on credential requests. Poll GET /v1/mandates/{id} to detect when a mandate moves from pending_approval to active — do not request credentials until the mandate is active.'
+x-ap2:
+  compatible: true
+  mandate_mapping: AllowanceMandate → AP2 Intent Mandate (human-not-present scenario)
+  future_changes: Mandate body will be a signed VDC. Human approval will produce a cryptographic attestation. Payment tokens will be AP2 Payment Mandate VDCs.
+  spec_url: https://ap2-protocol.org/specification/

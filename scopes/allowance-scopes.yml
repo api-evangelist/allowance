@@ -1,0 +1,30 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/allowance-openapi-original.json
+schemes:
+- name: OAuth2
+  source: openapi/allowance-openapi-original.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://useallowance.com/oauth/authorize
+    tokenUrl: https://useallowance.com/oauth/token
+  description: OAuth2 authorization code flow (planned — not yet active)
+scopes:
+- scope: credentials:request
+  description: Request payment credentials against active mandates
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/allowance-openapi-original.json
+- scope: mandates:read
+  description: Read mandate details and status
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/allowance-openapi-original.json
+- scope: mandates:write
+  description: Propose and manage spending mandates
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/allowance-openapi-original.json

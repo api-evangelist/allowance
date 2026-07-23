@@ -1,0 +1,16 @@
+generated: '2026-07-17'
+method: searched
+source: https://useallowance.com/status.json
+spec_type: Webhooks
+advertised: true
+status: pre-launch
+catalog_published: false
+notes: >-
+  Allowance advertises webhook delivery as a product capability — it is a named component on
+  the status page ("webhooks": "Webhook delivery not yet available") and a listed feature of
+  the Developer plan (pricing.json). No AsyncAPI document and no webhook event catalog/schema
+  are published yet (pre-launch), so no event definitions are captured here. This artifact
+  records the advertised-but-not-yet-live webhook surface; NEVER fabricate event payloads.
+references:
+- https://useallowance.com/status.json
+- https://useallowance.com/pricing.json

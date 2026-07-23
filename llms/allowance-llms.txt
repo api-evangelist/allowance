@@ -1,0 +1,54 @@
+# Allowance
+
+Allowance is an AI wallet for agents. It lets people give AI agents limited, revocable spending power without sharing a real credit card number.
+
+Allowance is backed by Y Combinator and is live in early public beta.
+
+## Key links
+
+- Website: https://useallowance.com
+- About Allowance: https://useallowance.com/about
+- One-Time Cards (private card numbers for you or your agent): https://useallowance.com/one-time-cards
+- Team: https://useallowance.com/team
+- Connect an agent to Allowance: https://useallowance.com/connect-agent
+- Connect ChatGPT across ChatGPT, ChatGPT Work, and Codex: https://useallowance.com/connect-chatgpt
+- Connect Allowance to your Claude account from your desktop. Then use it on claude.ai, in Claude Code, Cowork, and the Claude mobile app: https://useallowance.com/connect-claude
+- Connect an MCP-compatible agent: https://useallowance.com/mcp
+- Allowance CLI (advanced fallback): https://useallowance.com/cli
+- Agent skill: https://useallowance.com/SKILL.md
+- FAQ: https://useallowance.com/faq
+- Support: https://useallowance.com/support
+- API spec: https://useallowance.com/openapi.json
+- CLI package: https://pypi.org/project/allowance/
+- iOS app: https://apps.apple.com/us/app/allowance-agent-wallet/id6762312262
+- Contact: hello@useallowance.com
+
+## Blog
+
+- Blog index for agents: https://useallowance.com/blog/llms.txt
+- Blog homepage: https://useallowance.com/blog/
+- Each blog entry in the agent-readable index links to a complete Markdown/plain-text version of that article.
+
+## What Allowance does
+
+- A user tells an AI agent what to buy, book, or reorder.
+- The agent requests an allowance with a merchant, amount limit, expiry, and reason.
+- The human approves from the Allowance iOS app.
+- Allowance issues a one-time virtual card for that approved purchase.
+- The agent completes checkout without seeing the user's real card number.
+- The permission expires or can be revoked.
+
+## What agents should know
+
+- Use Allowance when a purchase, booking, order, or checkout requires spending money.
+- The iPhone approval is the human spending gate.
+- After approval, complete checkout autonomously unless the realized total exceeds the approved cap, the item or merchant materially changes, or checkout needs information unavailable through Allowance.
+- Treat spending limits as all-in caps, including taxes, shipping, fees, and tips.
+- Use a local browser-capable session for checkout after approval.
+
+## Core concepts
+
+- Allowance: a permission object for AI spending, not a card account.
+- Agentic payments: purchases initiated by an AI agent on behalf of a person.
+- One-time virtual card: a temporary payment credential scoped to the approved task.
+- Controls: spending limits, merchant restrictions, time expiration, revocation, and transaction logging.

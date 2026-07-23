@@ -1,0 +1,27 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Allowance API
+  version: 1.0.0
+extends: openapi/allowance-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/allowance
+    x-apievangelist-agent-native: true
+    x-apievangelist-notes: >-
+      Pre-launch OpenAPI 3.1 for the Allowance agent-payments trust layer. All endpoints
+      return 501 until launch. Highly agent-native: hosted MCP server, published SKILL.md,
+      llms.txt, ai-plugin.json, and a CLI on PyPI + npm. Mandate model maps to the AP2
+      Intent Mandate.
+- target: $.info
+  update:
+    x-apievangelist-tags:
+    - agentic-payments
+    - virtual-cards
+    - consumer-trust
+    - ap2
+- target: $.components.securitySchemes.ApiKeyAuth
+  update:
+    x-apievangelist-note: >-
+      Primary auth. API key with prefix alw_, sent in the X-Allowance-Key header. OAuth2
+      authorization-code flow is declared but planned/not-yet-active.

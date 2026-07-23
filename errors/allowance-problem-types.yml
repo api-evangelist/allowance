@@ -1,0 +1,35 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/allowance-openapi-original.json
+format: custom
+envelope: '{ "error": { "code": string, "message": string, "param"?: string, "doc_url"?: uri } }'
+notes: >-
+  Allowance uses a custom JSON error envelope (application/json), not RFC 9457
+  application/problem+json. All endpoints currently return 501 Not Implemented (pre-launch).
+problems:
+- status: 400
+  code: bad_request
+  title: Invalid request parameters
+  source_response: BadRequest
+- status: 401
+  code: unauthorized
+  title: Missing or invalid API key
+  source_response: Unauthorized
+- status: 404
+  code: not_found
+  title: Resource not found
+  source_response: NotFound
+- status: 409
+  code: mandate_not_active
+  title: Mandate is not active (pending_approval, expired, revoked, or exhausted)
+  source_operation: openapi/allowance-openapi-original.json#requestCredential
+- status: 429
+  code: rate_limited
+  title: Rate limit exceeded
+  source_response: RateLimited
+  headers: [Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining]
+- status: 501
+  code: not_implemented
+  title: Pre-launch — this endpoint is not yet active
+  source_response: NotImplemented
+  doc_url: https://useallowance.com/connect-agent

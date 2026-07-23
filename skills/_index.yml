@@ -1,0 +1,10 @@
+generated: '2026-07-17'
+method: searched
+source: https://useallowance.com/SKILL.md
+skills:
+- file: allowance-purchase.md
+  name: Allowance — Agent Purchase Wallet
+  description: Provider-published SKILL.md (saved verbatim). Full CLI-based checkout flow — request approval, issue a virtual card, complete checkout, report the outcome.
+  api: openapi/allowance-openapi-original.json
+  surface: cli
+  operations: [createMandate, getMandate, requestCredential]

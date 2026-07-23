@@ -1,0 +1,25 @@
+generated: '2026-07-17'
+method: searched
+source: https://useallowance.com/llms.txt
+notes: >-
+  Allowance ships its agent purchase wallet as a CLI on both PyPI and npm. Both are
+  first-party (published under the Allowance / @allowance namespace). There is no
+  importable language SDK yet — the CLI is the client surface (see cli/allowance-cli.yml).
+packages:
+- language: python
+  registry: pypi
+  name: allowance
+  url: https://pypi.org/project/allowance/
+  install: pip install allowance
+  version: 0.1.6
+  requires: ">=3.12"
+  kind: cli
+  official: true
+- language: javascript
+  registry: npm
+  name: "@allowance/cli"
+  url: https://www.npmjs.com/package/@allowance/cli
+  install: npm install -g @allowance/cli
+  version: 0.5.5
+  kind: cli
+  official: true

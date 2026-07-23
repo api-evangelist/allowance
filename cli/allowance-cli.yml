@@ -1,0 +1,45 @@
+generated: '2026-07-17'
+method: searched
+source: https://useallowance.com/SKILL.md
+name: allowance
+description: >-
+  First-party Allowance agent purchase wallet CLI. The primary programmatic surface today:
+  an agent uses it to verify a phone, request spending approval, issue a one-time virtual
+  card at checkout, fetch checkout identity/address details, and report the purchase outcome.
+  Purchases are local-browser-only.
+install:
+- registry: pypi
+  command: pip install allowance
+- registry: npm
+  command: npm install -g @allowance/cli
+repository: https://github.com/dasmer/allowance-cli
+docs: https://useallowance.com/cli
+commands:
+- group: setup
+  usage: allowance setup --phone <phone> [--code <code>]
+  description: Send an SMS verification code, then connect the wallet with the 6-digit code. Never run bare `allowance setup` (needs a real terminal).
+- group: request
+  usage: allowance request --merchant <name> --url <url> --amount <cents> --reason <text> --local-browser-tool <value> [--no-shipping] [--delayed-purchase --allowance-valid-for-days <1-14>|--allowance-expires-at <iso8601>] [--json]
+  description: Request spending approval (push notification to the user's phone); blocks up to 10 min until approved or denied. Returns allowance_id on approval.
+- group: card issue
+  usage: allowance card issue --allowance-id <id> --amount <cents> --merchant <name>
+  description: Issue a one-time virtual card (PAN, expiry, CVV) once the merchant payment form is ready. Never reveal card details in chat.
+- group: identity
+  usage: allowance identity --allowance-id <id>
+  description: Fetch checkout identity/contact details for the approved purchase.
+- group: address shipping
+  usage: allowance address shipping --allowance-id <id>
+  description: Fetch the shipping address (only when the item requires shipping).
+- group: address billing
+  usage: allowance address billing --allowance-id <id>
+  description: Fetch the billing address.
+- group: purchase success
+  usage: allowance purchase success --allowance-id <id> --attempt-id <id> --charged <cents>
+  description: Report a successful purchase (required — unreported purchases block future requests).
+- group: purchase failure
+  usage: allowance purchase failure --allowance-id <id> --attempt-id <id> --error-code <code>
+  description: Report a failed purchase with a decline/outcome code (see errors/allowance-decline-codes.yml).
+- group: status
+  usage: allowance status --allowance-id <id> [--json]
+  description: Check the current status of an approval (used by long-running / delayed-purchase monitors).
+browser_tool_values: [browser-tool, computer-use, chrome-extension, other-browser-control]
