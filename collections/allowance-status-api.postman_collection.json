@@ -1,0 +1,170 @@
+{
+  "item": [
+    {
+      "id": "90958ec5-093b-481f-987d-49959600ffc0",
+      "name": "Status",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ca20b6f4-e06e-4a3c-84f2-b70e3e697681",
+          "name": "Health check",
+          "request": {
+            "name": "Health check",
+            "description": {
+              "content": "Mirrors https://useallowance.com/status.json.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9bbbc4e2-4cb9-4cd3-bf06-52f6f84a7171",
+              "name": "System status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Allowance-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f06a1b07-cf53-41bd-8413-3ff53dd4f6d7",
+              "name": "Pre-launch: this endpoint is not yet active",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Allowance-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"not_implemented\",\n    \"message\": \"Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.\",\n    \"doc_url\": \"https://useallowance.com/connect-agent\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.useallowance.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Allowance-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f2f0519b-5ae6-46fd-90ae-3ba524f9feb7",
+    "name": "Allowance Mandates Status API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Consumer trust layer for AI agent payments.\n\n## How it works\n\n1. **Agent proposes a mandate.** The agent calls `POST /v1/mandates` with a suggested amount, merchant, and cadence. The mandate starts in `pending_approval` status.\n2. **Human approves the mandate.** The mandate owner receives a notification (push, email, or in-app) and approves it. The mandate becomes `active`. The agent never triggers this step — it waits.\n3. **Agent requests a virtual card.** When a purchase is needed, the agent calls `POST /v1/mandates/{id}/credential-requests`. Allowance automatically validates the request against the mandate rules (amount, merchant, time period). No human involvement. If valid, a single-use virtual card (PAN, expiry, CVV) is returned — the agent uses it like a card number at checkout. If not, the request is denied with reasons.\n4. **Mandate lifecycle.** For `cadence: \"once\"` (immediate) mandates, the mandate auto-expires after the first virtual card is issued. For recurring mandates, the mandate stays active and the agent can request a new virtual card on each purchase cycle within the defined rules.\n\n## AP2 compatibility\n\nThis API is designed to be a natural precursor to the [AP2 Agent Payments Protocol](https://ap2-protocol.org). The Allowance mandate maps directly to AP2's Intent Mandate (human-not-present scenario). In a future AP2-compatible version, the mandate will be a cryptographically signed Verifiable Digital Credential (VDC), and human approval will produce a non-repudiable cryptographic attestation rather than an in-system state change. The same concepts and fields carry forward.\n\n**Status: Pre-launch.** All endpoints return `501 Not Implemented`. Contact hello@useallowance.com for early access.\n\nContact Support:\n Name: Allowance\n Email: hello@useallowance.com",
+      "type": "text/plain"
+    }
+  }
+}

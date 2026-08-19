@@ -1,0 +1,135 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Allowance Mandates API",
+    "version": "0.1.0-pre-launch"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Allowance-Key",
+      "value": "{{X-Allowance-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Mandates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Propose a spending mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.useallowance.com/v1/mandates",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The agent proposes a mandate with a suggested budget, merchant restrictions, and cadence. The mandate is created with `status: pending_approval` and is not usable until the human owner approves it out-of-band (via push notification, email, or in-app review). The agent should poll `GET /v1/mandates/{id}` to detect when status becomes `active`."
+        },
+        {
+          "info": {
+            "name": "Retrieve a mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.useallowance.com/v1/mandates/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Mandate ID (prefix: mnd_)"
+              }
+            ]
+          },
+          "docs": "Poll this endpoint to check whether the human has approved the mandate (`status: active`). Also use it to check remaining budget and expiry before requesting a credential."
+        },
+        {
+          "info": {
+            "name": "Revoke a mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.useallowance.com/v1/mandates/:id/revoke",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Immediately revoke an active or pending_approval mandate. Once revoked, no further credential requests will be accepted. Any virtual cards already issued remain valid until their own expires_at — revocation does not cancel in-flight transactions. Only callable by the mandate owner, not the agent."
+        },
+        {
+          "info": {
+            "name": "Request a payment credential",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.useallowance.com/v1/mandates/:id/credential-requests",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request a single-use virtual card to execute a specific purchase against an active mandate. Allowance automatically validates the request against the mandate rules — amount, merchant, merchant category, and time period. No human approval is needed at this step; the human already approved the mandate.\n\nIf validation passes, a virtual card (PAN, expiry, CVV) is returned. The agent uses these details at merchant checkout like a normal card number. The card is single-use, amount-capped, and short-li"
+        },
+        {
+          "info": {
+            "name": "Retrieve a credential request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.useallowance.com/v1/mandates/:id/credential-requests/:cr_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cr_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a credential request"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

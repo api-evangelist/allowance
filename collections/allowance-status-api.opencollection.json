@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Allowance Mandates Status API",
+    "version": "0.1.0-pre-launch"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Allowance-Key",
+      "value": "{{X-Allowance-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Health check",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.useallowance.com/v1/status"
+          },
+          "docs": "Mirrors https://useallowance.com/status.json."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

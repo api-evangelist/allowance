@@ -7,20 +7,23 @@ server:
   transport: http
   url: https://mcp.useallowance.com
   auth: oauth-browser
-  description: >-
-    Hosted remote MCP server for Allowance. Add https://mcp.useallowance.com to any
-    MCP-compatible agent as a remote server; the MCP client opens a browser to sign in
-    to Allowance, after which the agent can request spending approval and complete
-    purchases, approving each purchase from the user's phone. Probed 2026-07-17 and
-    returns HTTP 401 (auth required) at the root, consistent with a live OAuth-gated
-    remote MCP endpoint.
+  description: Hosted remote MCP server for Allowance. Add https://mcp.useallowance.com to any MCP-compatible
+    agent as a remote server; the MCP client opens a browser to sign in to Allowance, after which the
+    agent can request spending approval and complete purchases, approving each purchase from the user's
+    phone. Probed 2026-07-17 and returns HTTP 401 (auth required) at the root, consistent with a live
+    OAuth-gated remote MCP endpoint.
 connect_docs:
 - https://useallowance.com/mcp
 - https://useallowance.com/connect-agent
 - https://useallowance.com/connect-chatgpt
 - https://useallowance.com/connect-claude
-notes: >-
-  Tool inventory is not published in a machine-readable manifest and the server requires
-  authentication, so specific tool names are not enumerated here. The underlying REST
-  surface (openapi/allowance-openapi-original.json) covers mandate creation, approval
-  polling, credential/virtual-card requests, and revocation.
+notes: Tool inventory is not published in a machine-readable manifest and the server requires authentication,
+  so specific tool names are not enumerated here. The underlying REST surface (openapi/allowance-openapi-original.json)
+  covers mandate creation, approval polling, credential/virtual-card requests, and revocation.
+deployment:
+  mode: remote
+  endpoint: https://mcp.useallowance.com
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census
