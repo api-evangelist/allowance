@@ -6,8 +6,8 @@ info:
     Create a spending mandate, wait for the human owner to approve it, then request a
     single-use virtual card for a specific purchase against the active mandate.
 sourceDescriptions:
-- name: allowanceApi
-  url: ../openapi/allowance-openapi-original.json
+- name: mandatesApi
+  url: ../openapi/allowance-mandates-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: mandateToCard

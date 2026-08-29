@@ -1,6 +1,6 @@
-generated: '2026-07-17'
-method: derived
-source: arazzo/allowance-mandate-to-card.yml
+x-generated: '2026-07-17'
+x-method: derived
+x-source: arazzo/allowance-mandate-to-card.yml
 workflows:
 - file: allowance-mandate-to-card.yml
   workflowId: mandateToCard
