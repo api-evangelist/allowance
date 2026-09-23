@@ -1,9 +1,7 @@
 {
   "provider": "allowance",
   "sources": [
-    "allowance-mandates-api-openapi.yml",
-    "allowance-pricing-api-openapi.yml",
-    "allowance-status-api-openapi.yml"
+    "_original/allowance-openapi-original.json"
   ],
   "outputs": [
     "allowance-mandates-api-openapi.yml",
@@ -13,6 +11,24 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "allowance-openapi-original.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "allowance-openapi-original.json: tagged paths POST /mandates -> Mandates",
+    "allowance-openapi-original.json: tagged paths GET /mandates/{id} -> Mandates",
+    "allowance-openapi-original.json: tagged paths POST /mandates/{id}/revoke -> Mandates",
+    "allowance-openapi-original.json: tagged paths POST /mandates/{id}/credential-requests -> Mandates",
+    "allowance-openapi-original.json: tagged paths GET /mandates/{id}/credential-requests/{cr_id} -> Mandates",
+    "allowance-openapi-original.json: tagged paths GET /pricing -> Pricing",
+    "allowance-openapi-original.json: tagged paths GET /status -> Status",
+    "allowance-openapi-original.json: declared missing tag: Mandates",
+    "allowance-openapi-original.json: declared missing tag: Pricing",
+    "allowance-openapi-original.json: declared missing tag: Status",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "allowance-mandates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allowance-pricing-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allowance-status-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

@@ -1,29 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Allowance Mandates Pricing API
+  title: Allowance Pricing API
   version: 0.1.0-pre-launch
-  description: 'Consumer trust layer for AI agent payments.
-
-
-    ## How it works
-
-
-    1. **Agent proposes a mandate.** The agent calls `POST /v1/mandates` with a suggested amount, merchant, and cadence. The mandate starts in `pending_approval` status.
-
-    2. **Human approves the mandate.** The mandate owner receives a notification (push, email, or in-app) and approves it. The mandate becomes `active`. The agent never triggers this step — it waits.
-
-    3. **Agent requests a virtual card.** When a purchase is needed, the agent calls `POST /v1/mandates/{id}/credential-requests`. Allowance automatically validates the request against the mandate rules (amount, merchant, time period). No human involvement. If valid, a single-use virtual card (PAN, expiry, CVV) is returned — the agent uses it like a card number at checkout. If not, the request is denied with reasons.
-
-    4. **Mandate lifecycle.** For `cadence: "once"` (immediate) mandates, the mandate auto-expires after the first virtual card is issued. For recurring mandates, the mandate stays active and the agent can request a new virtual card on each purchase cycle within the defined rules.
-
-
-    ## AP2 compatibility
-
-
-    This API is designed to be a natural precursor to the [AP2 Agent Payments Protocol](https://ap2-protocol.org). The Allowance mandate maps directly to AP2''s Intent Mandate (human-not-present scenario). In a future AP2-compatible version, the mandate will be a cryptographically signed Verifiable Digital Credential (VDC), and human approval will produce a non-repudiable cryptographic attestation rather than an in-system state change. The same concepts and fields carry forward.
-
-
-    **Status: Pre-launch.** All endpoints return `501 Not Implemented`. Contact hello@useallowance.com for early access.'
+  description: Consumer trust layer for AI agent payments.
   contact:
     name: Allowance
     email: hello@useallowance.com
