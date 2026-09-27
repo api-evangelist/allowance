@@ -191,6 +191,85 @@ paths:
       - Mandates
 components:
   schemas:
+    VirtualCard:
+      type: object
+      description: A single-use virtual card issued when a credential request is approved. The agent uses these details at checkout exactly like a physical card. Safety comes from the card being single-use, amount-capped, merchant-locked, and short-lived — not from hiding credentials.
+      required:
+      - pan
+      - expiry_month
+      - expiry_year
+      - cvv
+      - billing_zip
+      - expires_at
+      - single_use
+      - network
+      properties:
+        pan:
+          type: string
+          description: 16-digit card number. Use at merchant checkout.
+        expiry_month:
+          type: string
+          description: '2-digit expiry month. Example: ''09''.'
+        expiry_year:
+          type: string
+          description: '4-digit expiry year. Example: ''2026''.'
+        cvv:
+          type: string
+          description: 3-digit security code.
+        billing_zip:
+          type: string
+          description: Billing ZIP code for AVS verification.
+        network:
+          type: string
+          description: 'Card network. Example: visa, mastercard.'
+        expires_at:
+          type: string
+          format: date-time
+          description: When this virtual card expires. Short-lived — use immediately. Typically 15 minutes.
+        single_use:
+          type: boolean
+          description: Always true. This card is deactivated after one approved transaction regardless of cadence.
+        amount_limit:
+          type: integer
+          description: The maximum amount this card will approve, in minor units. Matches the credential request amount. Any charge above this is declined at the network level.
+        merchant_lock:
+          type:
+          - string
+          - 'null'
+          description: If set, the card is locked to this merchant name. Charges from other merchants are declined at the network level. null if the mandate has no merchant restriction.
+    CreateCredentialRequest:
+      type: object
+      required:
+      - amount
+      - currency
+      - merchant
+      - context
+      properties:
+        amount:
+          type: integer
+          minimum: 1
+          description: 'Requested amount in minor currency units (cents). Example: 47231 = $472.31. Never use floats.'
+        currency:
+          type: string
+          pattern: ^[A-Z]{3}$
+        merchant:
+          type: string
+          description: Name of the merchant where the purchase will be made.
+        merchant_category_code:
+          type: string
+          pattern: ^[0-9]{4}$
+          description: 4-digit ISO 18245 MCC for the merchant.
+        context:
+          type: string
+          maxLength: 1024
+          description: Human-readable explanation of why this purchase is being made. Appears in the owner's transaction log. Be specific — this is the audit trail.
+        idempotency_key:
+          type: string
+          description: Always set this. Prevents duplicate credential issuance on retries.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
     AllowanceBudget:
       type: object
       required:
@@ -306,39 +385,6 @@ components:
           items:
             type: string
           description: Human-readable reasons for the validation outcome. Always populated — useful for logging and debugging.
-    CreateCredentialRequest:
-      type: object
-      required:
-      - amount
-      - currency
-      - merchant
-      - context
-      properties:
-        amount:
-          type: integer
-          minimum: 1
-          description: 'Requested amount in minor currency units (cents). Example: 47231 = $472.31. Never use floats.'
-        currency:
-          type: string
-          pattern: ^[A-Z]{3}$
-        merchant:
-          type: string
-          description: Name of the merchant where the purchase will be made.
-        merchant_category_code:
-          type: string
-          pattern: ^[0-9]{4}$
-          description: 4-digit ISO 18245 MCC for the merchant.
-        context:
-          type: string
-          maxLength: 1024
-          description: Human-readable explanation of why this purchase is being made. Appears in the owner's transaction log. Be specific — this is the audit trail.
-        idempotency_key:
-          type: string
-          description: Always set this. Prevents duplicate credential issuance on retries.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
     Error:
       type: object
       required:
@@ -359,6 +405,88 @@ components:
             doc_url:
               type: string
               format: uri
+    CredentialRequest:
+      type: object
+      required:
+      - id
+      - mandate_id
+      - amount
+      - currency
+      - merchant
+      - validation
+      - status
+      - created_at
+      properties:
+        id:
+          type: string
+          pattern: ^cr_
+          description: Unique credential request ID.
+        mandate_id:
+          type: string
+          pattern: ^mnd_
+        amount:
+          type: integer
+          description: Requested amount in minor currency units.
+        currency:
+          type: string
+        merchant:
+          type: string
+        merchant_category_code:
+          type: string
+        context:
+          type: string
+        idempotency_key:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        validation:
+          $ref: '#/components/schemas/ValidationResult'
+        virtual_card:
+          description: Single-use virtual card if validation passed, null if denied.
+          oneOf:
+          - $ref: '#/components/schemas/VirtualCard'
+          - type: 'null'
+        status:
+          type: string
+          enum:
+          - approved
+          - denied
+          - expired
+          description: approved = token issued, proceed with purchase. denied = mandate rules not satisfied, do not proceed. expired = mandate expired before this request was evaluated.
+        created_at:
+          type: string
+          format: date-time
+    CreateMandateRequest:
+      type: object
+      required:
+      - agent_id
+      - budget
+      properties:
+        agent_id:
+          type: string
+        budget:
+          $ref: '#/components/schemas/AllowanceBudget'
+        risk_controls:
+          type: object
+          properties:
+            require_merchant_match:
+              type: boolean
+            block_international:
+              type: boolean
+            max_daily_spend:
+              type:
+              - integer
+              - 'null'
+            velocity_limit_per_hour:
+              type:
+              - integer
+              - 'null'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
     AllowanceMandate:
       type: object
       required:
@@ -431,147 +559,18 @@ components:
         x-ap2-note:
           type: string
           description: In a future AP2-compatible version, this mandate will be issued as a signed Intent Mandate VDC and approved_at will carry a cryptographic attestation.
-    CredentialRequest:
-      type: object
-      required:
-      - id
-      - mandate_id
-      - amount
-      - currency
-      - merchant
-      - validation
-      - status
-      - created_at
-      properties:
-        id:
-          type: string
-          pattern: ^cr_
-          description: Unique credential request ID.
-        mandate_id:
-          type: string
-          pattern: ^mnd_
-        amount:
-          type: integer
-          description: Requested amount in minor currency units.
-        currency:
-          type: string
-        merchant:
-          type: string
-        merchant_category_code:
-          type: string
-        context:
-          type: string
-        idempotency_key:
-          type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        validation:
-          $ref: '#/components/schemas/ValidationResult'
-        virtual_card:
-          description: Single-use virtual card if validation passed, null if denied.
-          oneOf:
-          - $ref: '#/components/schemas/VirtualCard'
-          - type: 'null'
-        status:
-          type: string
-          enum:
-          - approved
-          - denied
-          - expired
-          description: approved = token issued, proceed with purchase. denied = mandate rules not satisfied, do not proceed. expired = mandate expired before this request was evaluated.
-        created_at:
-          type: string
-          format: date-time
-    VirtualCard:
-      type: object
-      description: A single-use virtual card issued when a credential request is approved. The agent uses these details at checkout exactly like a physical card. Safety comes from the card being single-use, amount-capped, merchant-locked, and short-lived — not from hiding credentials.
-      required:
-      - pan
-      - expiry_month
-      - expiry_year
-      - cvv
-      - billing_zip
-      - expires_at
-      - single_use
-      - network
-      properties:
-        pan:
-          type: string
-          description: 16-digit card number. Use at merchant checkout.
-        expiry_month:
-          type: string
-          description: '2-digit expiry month. Example: ''09''.'
-        expiry_year:
-          type: string
-          description: '4-digit expiry year. Example: ''2026''.'
-        cvv:
-          type: string
-          description: 3-digit security code.
-        billing_zip:
-          type: string
-          description: Billing ZIP code for AVS verification.
-        network:
-          type: string
-          description: 'Card network. Example: visa, mastercard.'
-        expires_at:
-          type: string
-          format: date-time
-          description: When this virtual card expires. Short-lived — use immediately. Typically 15 minutes.
-        single_use:
-          type: boolean
-          description: Always true. This card is deactivated after one approved transaction regardless of cadence.
-        amount_limit:
-          type: integer
-          description: The maximum amount this card will approve, in minor units. Matches the credential request amount. Any charge above this is declined at the network level.
-        merchant_lock:
-          type:
-          - string
-          - 'null'
-          description: If set, the card is locked to this merchant name. Charges from other merchants are declined at the network level. null if the mandate has no merchant restriction.
-    CreateMandateRequest:
-      type: object
-      required:
-      - agent_id
-      - budget
-      properties:
-        agent_id:
-          type: string
-        budget:
-          $ref: '#/components/schemas/AllowanceBudget'
-        risk_controls:
-          type: object
-          properties:
-            require_merchant_match:
-              type: boolean
-            block_international:
-              type: boolean
-            max_daily_spend:
-              type:
-              - integer
-              - 'null'
-            velocity_limit_per_hour:
-              type:
-              - integer
-              - 'null'
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
   responses:
-    Unauthorized:
-      description: Missing or invalid API key
+    NotImplemented:
+      description: 'Pre-launch: this endpoint is not yet active'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: not_implemented
+              message: Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.
+              doc_url: https://useallowance.com/connect-agent
     RateLimited:
       description: Rate limit exceeded
       headers:
@@ -588,17 +587,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotImplemented:
-      description: 'Pre-launch: this endpoint is not yet active'
+    Unauthorized:
+      description: Missing or invalid API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-          example:
-            error:
-              code: not_implemented
-              message: Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.
-              doc_url: https://useallowance.com/connect-agent
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     NotFound:
       description: Resource not found
       content:
@@ -630,6 +630,29 @@ components:
         metadata:
           task: reorder paper towels when stock is low
           product_asin: B07N1THQ6Z
+    FlightMandate:
+      summary: Book a flight under $500 (immediate, once)
+      value:
+        agent_id: agent_claude_travel
+        budget:
+          cadence: once
+          per_transaction_max: 50000
+          total_max: 50000
+          currency: USD
+          merchants:
+          - United Airlines
+          merchant_category_codes:
+          - '4511'
+          categories:
+          - travel
+          - flights
+          expires_at: '2026-02-17T14:30:00Z'
+        risk_controls:
+          require_merchant_match: true
+          block_international: false
+        metadata:
+          task: book cheapest flight to NYC under $500
+          initiated_by: user_voice_command
     SubscriptionMandate:
       summary: Pay subscription renewals up to $20/month (recurring, open merchant)
       value:
@@ -654,29 +677,6 @@ components:
           velocity_limit_per_hour: 3
         metadata:
           task: auto-renew approved subscriptions under $20/month
-    FlightMandate:
-      summary: Book a flight under $500 (immediate, once)
-      value:
-        agent_id: agent_claude_travel
-        budget:
-          cadence: once
-          per_transaction_max: 50000
-          total_max: 50000
-          currency: USD
-          merchants:
-          - United Airlines
-          merchant_category_codes:
-          - '4511'
-          categories:
-          - travel
-          - flights
-          expires_at: '2026-02-17T14:30:00Z'
-        risk_controls:
-          require_merchant_match: true
-          block_international: false
-        metadata:
-          task: book cheapest flight to NYC under $500
-          initiated_by: user_voice_command
   parameters:
     IdempotencyKey:
       name: Idempotency-Key
