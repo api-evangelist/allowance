@@ -190,204 +190,53 @@ paths:
       tags:
       - Mandates
 components:
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotImplemented:
+      description: 'Pre-launch: this endpoint is not yet active'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: not_implemented
+              message: Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.
+              doc_url: https://useallowance.com/connect-agent
   schemas:
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-            param:
-              type: string
-            doc_url:
-              type: string
-              format: uri
-    ValidationResult:
-      type: object
-      required:
-      - passed
-      - constraints
-      - reasons
-      description: The system's automatic validation of a credential request against the active mandate rules. No human involvement — this is evaluated instantly.
-      properties:
-        passed:
-          type: boolean
-          description: Whether all mandate constraints were satisfied.
-        constraints:
-          type: object
-          description: Individual constraint checks.
-          properties:
-            within_amount_limit:
-              type: object
-              properties:
-                passed:
-                  type: boolean
-                detail:
-                  type: string
-            merchant_match:
-              type: object
-              properties:
-                passed:
-                  type: boolean
-                detail:
-                  type: string
-            mcc_match:
-              type: object
-              properties:
-                passed:
-                  type: boolean
-                detail:
-                  type: string
-            within_time_period:
-              type: object
-              properties:
-                passed:
-                  type: boolean
-                detail:
-                  type: string
-            cadence_not_exhausted:
-              type: object
-              properties:
-                passed:
-                  type: boolean
-                detail:
-                  type: string
-            velocity_check:
-              type: object
-              properties:
-                passed:
-                  type: boolean
-                detail:
-                  type: string
-        reasons:
-          type: array
-          items:
-            type: string
-          description: Human-readable reasons for the validation outcome. Always populated — useful for logging and debugging.
-    CreateCredentialRequest:
-      type: object
-      required:
-      - amount
-      - currency
-      - merchant
-      - context
-      properties:
-        amount:
-          type: integer
-          minimum: 1
-          description: 'Requested amount in minor currency units (cents). Example: 47231 = $472.31. Never use floats.'
-        currency:
-          type: string
-          pattern: ^[A-Z]{3}$
-        merchant:
-          type: string
-          description: Name of the merchant where the purchase will be made.
-        merchant_category_code:
-          type: string
-          pattern: ^[0-9]{4}$
-          description: 4-digit ISO 18245 MCC for the merchant.
-        context:
-          type: string
-          maxLength: 1024
-          description: Human-readable explanation of why this purchase is being made. Appears in the owner's transaction log. Be specific — this is the audit trail.
-        idempotency_key:
-          type: string
-          description: Always set this. Prevents duplicate credential issuance on retries.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-    AllowanceBudget:
-      type: object
-      required:
-      - cadence
-      - per_transaction_max
-      - currency
-      properties:
-        cadence:
-          type: string
-          enum:
-          - once
-          - daily
-          - weekly
-          - monthly
-          - annually
-          - never
-          description: Spending cadence. 'once' = single-use mandate — expires after first credential is issued. 'never' = a lifetime cap that never resets. All others reset per interval.
-        per_transaction_max:
-          type: integer
-          minimum: 1
-          description: 'Maximum amount per credential request in minor currency units (cents for USD). Example: 50000 = $500.00.'
-        total_max:
-          type:
-          - integer
-          - 'null'
-          minimum: 1
-          description: Total cap across all credential requests in minor units. Resets per cadence interval. null = no cap.
-        currency:
-          type: string
-          pattern: ^[A-Z]{3}$
-          description: ISO 4217 currency code.
-        merchants:
-          type: array
-          items:
-            type: string
-          description: Allowlist of merchant names. Empty array = no merchant restriction.
-        merchant_category_codes:
-          type: array
-          items:
-            type: string
-            pattern: ^[0-9]{4}$
-          description: Allowlist of 4-digit ISO 18245 MCCs. Empty array = no MCC restriction.
-        categories:
-          type: array
-          items:
-            type: string
-          description: Semantic category labels. Supplementary to MCC — used for display and audit, not enforcement.
-        expires_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Mandate expiry as ISO 8601 datetime. null = no expiry. Always set this for sensitive or one-time tasks.
-    CreateMandateRequest:
-      type: object
-      required:
-      - agent_id
-      - budget
-      properties:
-        agent_id:
-          type: string
-        budget:
-          $ref: '#/components/schemas/AllowanceBudget'
-        risk_controls:
-          type: object
-          properties:
-            require_merchant_match:
-              type: boolean
-            block_international:
-              type: boolean
-            max_daily_spend:
-              type:
-              - integer
-              - 'null'
-            velocity_limit_per_hour:
-              type:
-              - integer
-              - 'null'
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
     AllowanceMandate:
       type: object
       required:
@@ -513,6 +362,150 @@ components:
         created_at:
           type: string
           format: date-time
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            param:
+              type: string
+            doc_url:
+              type: string
+              format: uri
+    ValidationResult:
+      type: object
+      required:
+      - passed
+      - constraints
+      - reasons
+      description: The system's automatic validation of a credential request against the active mandate rules. No human involvement — this is evaluated instantly.
+      properties:
+        passed:
+          type: boolean
+          description: Whether all mandate constraints were satisfied.
+        constraints:
+          type: object
+          description: Individual constraint checks.
+          properties:
+            within_amount_limit:
+              type: object
+              properties:
+                passed:
+                  type: boolean
+                detail:
+                  type: string
+            merchant_match:
+              type: object
+              properties:
+                passed:
+                  type: boolean
+                detail:
+                  type: string
+            mcc_match:
+              type: object
+              properties:
+                passed:
+                  type: boolean
+                detail:
+                  type: string
+            within_time_period:
+              type: object
+              properties:
+                passed:
+                  type: boolean
+                detail:
+                  type: string
+            cadence_not_exhausted:
+              type: object
+              properties:
+                passed:
+                  type: boolean
+                detail:
+                  type: string
+            velocity_check:
+              type: object
+              properties:
+                passed:
+                  type: boolean
+                detail:
+                  type: string
+        reasons:
+          type: array
+          items:
+            type: string
+          description: Human-readable reasons for the validation outcome. Always populated — useful for logging and debugging.
+    CreateCredentialRequest:
+      type: object
+      required:
+      - amount
+      - currency
+      - merchant
+      - context
+      properties:
+        amount:
+          type: integer
+          minimum: 1
+          description: 'Requested amount in minor currency units (cents). Example: 47231 = $472.31. Never use floats.'
+        currency:
+          type: string
+          pattern: ^[A-Z]{3}$
+        merchant:
+          type: string
+          description: Name of the merchant where the purchase will be made.
+        merchant_category_code:
+          type: string
+          pattern: ^[0-9]{4}$
+          description: 4-digit ISO 18245 MCC for the merchant.
+        context:
+          type: string
+          maxLength: 1024
+          description: Human-readable explanation of why this purchase is being made. Appears in the owner's transaction log. Be specific — this is the audit trail.
+        idempotency_key:
+          type: string
+          description: Always set this. Prevents duplicate credential issuance on retries.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    CreateMandateRequest:
+      type: object
+      required:
+      - agent_id
+      - budget
+      properties:
+        agent_id:
+          type: string
+        budget:
+          $ref: '#/components/schemas/AllowanceBudget'
+        risk_controls:
+          type: object
+          properties:
+            require_merchant_match:
+              type: boolean
+            block_international:
+              type: boolean
+            max_daily_spend:
+              type:
+              - integer
+              - 'null'
+            velocity_limit_per_hour:
+              type:
+              - integer
+              - 'null'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
     VirtualCard:
       type: object
       description: A single-use virtual card issued when a credential request is approved. The agent uses these details at checkout exactly like a physical card. Safety comes from the card being single-use, amount-capped, merchant-locked, and short-lived — not from hiding credentials.
@@ -559,52 +552,59 @@ components:
           - string
           - 'null'
           description: If set, the card is locked to this merchant name. Charges from other merchants are declined at the network level. null if the mandate has no merchant restriction.
-  responses:
-    RateLimited:
-      description: Rate limit exceeded
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotImplemented:
-      description: 'Pre-launch: this endpoint is not yet active'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            error:
-              code: not_implemented
-              message: Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.
-              doc_url: https://useallowance.com/connect-agent
-    BadRequest:
-      description: Invalid request parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    AllowanceBudget:
+      type: object
+      required:
+      - cadence
+      - per_transaction_max
+      - currency
+      properties:
+        cadence:
+          type: string
+          enum:
+          - once
+          - daily
+          - weekly
+          - monthly
+          - annually
+          - never
+          description: Spending cadence. 'once' = single-use mandate — expires after first credential is issued. 'never' = a lifetime cap that never resets. All others reset per interval.
+        per_transaction_max:
+          type: integer
+          minimum: 1
+          description: 'Maximum amount per credential request in minor currency units (cents for USD). Example: 50000 = $500.00.'
+        total_max:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          description: Total cap across all credential requests in minor units. Resets per cadence interval. null = no cap.
+        currency:
+          type: string
+          pattern: ^[A-Z]{3}$
+          description: ISO 4217 currency code.
+        merchants:
+          type: array
+          items:
+            type: string
+          description: Allowlist of merchant names. Empty array = no merchant restriction.
+        merchant_category_codes:
+          type: array
+          items:
+            type: string
+            pattern: ^[0-9]{4}$
+          description: Allowlist of 4-digit ISO 18245 MCCs. Empty array = no MCC restriction.
+        categories:
+          type: array
+          items:
+            type: string
+          description: Semantic category labels. Supplementary to MCC — used for display and audit, not enforcement.
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Mandate expiry as ISO 8601 datetime. null = no expiry. Always set this for sensitive or one-time tasks.
   parameters:
     IdempotencyKey:
       name: Idempotency-Key
