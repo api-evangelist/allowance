@@ -1,0 +1,12 @@
+{
+ "url": "https://useallowance.com/openapi.json",
+ "requested_url": "https://useallowance.com/openapi.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 30577,
+ "sha256": "c94c99b9f8c776c29a8c6888a4acb9093a92f62a036014997b65fd5678a3ca77",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
