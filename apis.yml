@@ -45,7 +45,7 @@ x-tier: profiled
 x-tier-reason: enriched-from-public-surface
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-10-06'
 tags:
 - Company
 - Payments
@@ -105,6 +105,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- url: https://useallowance.com/blog/rss.xml
+  type: BlogRSS
 - type: Website
   url: https://useallowance.com/
 - type: Overlay
