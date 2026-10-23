@@ -99,3 +99,9 @@ x-ap2:
   mandate_mapping: AllowanceMandate → AP2 Intent Mandate (human-not-present scenario)
   future_changes: Mandate body will be a signed VDC. Human approval will produce a cryptographic attestation. Payment tokens will be AP2 Payment Mandate VDCs.
   spec_url: https://ap2-protocol.org/specification/
+x-provenance:
+  method: harvested
+  publisher: Allowance
+  source: https://useallowance.com/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
