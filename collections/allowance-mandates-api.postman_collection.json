@@ -1,1592 +1,1576 @@
 {
+  "info": {
+    "_postman_id": "86607ad5-afaa-465e-b208-462b9203fbe4",
+    "name": "Allowance Mandates API",
+    "description": "Consumer trust layer for AI agent payments.\n\nContact Support:\n Name: Allowance\n Email: hello@useallowance.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T01:33:19.000Z",
+    "updatedAt": "2026-10-22T01:33:19.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-86607ad5-afaa-465e-b208-462b9203fbe4"
+  },
   "item": [
     {
-      "id": "19f0a9d1-3497-4545-a360-69d9166613b5",
-      "name": "Mandates",
-      "description": {
-        "content": "",
-        "type": "text/plain"
-      },
+      "name": "mandates",
       "item": [
         {
-          "id": "a70cb710-a1c8-4533-96ad-137721b52aa5",
+          "name": "{id}",
+          "item": [
+            {
+              "name": "revoke",
+              "item": [
+                {
+                  "name": "Revoke a mandate",
+                  "id": "be2e2b11-991a-463d-adea-e8301edc8f96",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/mandates/:id/revoke",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "mandates",
+                        ":id",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "id": "cb575898-76ef-4cff-96bb-be1cb6172acd",
+                          "key": "id",
+                          "value": "mnd_",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Immediately revoke an active or pending_approval mandate. Once revoked, no further credential requests will be accepted. Any virtual cards already issued remain valid until their own expires_at \u2014 revocation does not cancel in-flight transactions. Only callable by the mandate owner, not the agent."
+                  },
+                  "response": [
+                    {
+                      "id": "d33ec819-ca2b-4c69-9cb7-bf989e966661",
+                      "name": "Mandate revoked",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/revoke",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "revoke"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"mnd_\",\n  \"owner_id\": \"<string>\",\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"never\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"FZL\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"1130\",\n      \"6343\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"status\": \"active\",\n  \"created_at\": \"<dateTime>\",\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"approved_at\": \"<string,null-date-time>\",\n  \"expires_at\": \"<string,null-date-time>\",\n  \"metadata\": {\n    \"dolore__\": \"<string>\",\n    \"ullamco738\": \"<string>\"\n  },\n  \"x-ap2-note\": \"<string>\"\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-d33ec819-ca2b-4c69-9cb7-bf989e966661"
+                    },
+                    {
+                      "id": "baa63032-ae3f-49b2-997c-193b05f77ee5",
+                      "name": "Missing or invalid API key",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/revoke",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "revoke"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-baa63032-ae3f-49b2-997c-193b05f77ee5"
+                    },
+                    {
+                      "id": "42872592-2598-4b52-a3d6-5892b63176ea",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/revoke",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "revoke"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-42872592-2598-4b52-a3d6-5892b63176ea"
+                    },
+                    {
+                      "id": "f24b8680-d12f-4751-9c44-bf5be8323051",
+                      "name": "Pre-launch: this endpoint is not yet active",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/revoke",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "revoke"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Implemented",
+                      "code": 501,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-f24b8680-d12f-4751-9c44-bf5be8323051"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T01:33:19.000Z",
+                  "updatedAt": "2026-10-22T01:33:19.000Z",
+                  "uid": "35240-be2e2b11-991a-463d-adea-e8301edc8f96"
+                }
+              ],
+              "id": "b0ee7702-cc01-4c88-a094-0a232ae8df41",
+              "createdAt": "2026-10-22T01:33:19.000Z",
+              "updatedAt": "2026-10-22T01:33:19.000Z",
+              "uid": "35240-b0ee7702-cc01-4c88-a094-0a232ae8df41"
+            },
+            {
+              "name": "credential-requests",
+              "item": [
+                {
+                  "name": "{cr_id}",
+                  "item": [
+                    {
+                      "name": "Retrieve a credential request",
+                      "id": "410d0218-4c6d-482d-ab82-9a496f22b90a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/credential-requests/:cr_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "credential-requests",
+                            ":cr_id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "4f7f2dec-37de-49ee-afd9-af4c19b990b3",
+                              "key": "id",
+                              "value": "mnd_",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "672186f5-a5fc-4b65-b9b7-f2b8d7827748",
+                              "key": "cr_id",
+                              "value": "cr_",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "0b6d9a13-bd1d-4c02-90ce-266ba58266bc",
+                          "name": "Credential request retrieved",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "X-Allowance-Key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/mandates/:id/credential-requests/:cr_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "mandates",
+                                ":id",
+                                "credential-requests",
+                                ":cr_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "cr_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"cr_\",\n  \"mandate_id\": \"mnd_\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"validation\": {\n    \"passed\": \"<boolean>\",\n    \"constraints\": {\n      \"within_amount_limit\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"merchant_match\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"mcc_match\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"within_time_period\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"cadence_not_exhausted\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"velocity_check\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      }\n    },\n    \"reasons\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"status\": \"approved\",\n  \"created_at\": \"<dateTime>\",\n  \"merchant_category_code\": \"<string>\",\n  \"context\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"in_03_\": \"<string>\"\n  },\n  \"virtual_card\": {\n    \"pan\": \"<string>\",\n    \"expiry_month\": \"<string>\",\n    \"expiry_year\": \"<string>\",\n    \"cvv\": \"<string>\",\n    \"billing_zip\": \"<string>\",\n    \"expires_at\": \"<dateTime>\",\n    \"single_use\": \"<boolean>\",\n    \"network\": \"<string>\",\n    \"amount_limit\": \"<integer>\",\n    \"merchant_lock\": \"<string,null>\"\n  }\n}",
+                          "createdAt": "2026-10-22T01:33:19.000Z",
+                          "updatedAt": "2026-10-22T01:33:19.000Z",
+                          "uid": "35240-0b6d9a13-bd1d-4c02-90ce-266ba58266bc"
+                        },
+                        {
+                          "id": "b359fb3a-c31d-499b-816b-6d0f36131411",
+                          "name": "Missing or invalid API key",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "X-Allowance-Key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/mandates/:id/credential-requests/:cr_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "mandates",
+                                ":id",
+                                "credential-requests",
+                                ":cr_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "cr_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                          "createdAt": "2026-10-22T01:33:19.000Z",
+                          "updatedAt": "2026-10-22T01:33:19.000Z",
+                          "uid": "35240-b359fb3a-c31d-499b-816b-6d0f36131411"
+                        },
+                        {
+                          "id": "d9eef78a-8e6b-40cf-aec3-1cd7e1704a4c",
+                          "name": "Resource not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "X-Allowance-Key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/mandates/:id/credential-requests/:cr_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "mandates",
+                                ":id",
+                                "credential-requests",
+                                ":cr_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "cr_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                          "createdAt": "2026-10-22T01:33:19.000Z",
+                          "updatedAt": "2026-10-22T01:33:19.000Z",
+                          "uid": "35240-d9eef78a-8e6b-40cf-aec3-1cd7e1704a4c"
+                        },
+                        {
+                          "id": "8e89e861-8c24-4457-a82a-865ec2153c29",
+                          "name": "Pre-launch: this endpoint is not yet active",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "X-Allowance-Key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/mandates/:id/credential-requests/:cr_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "mandates",
+                                ":id",
+                                "credential-requests",
+                                ":cr_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "cr_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Implemented",
+                          "code": 501,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                          "createdAt": "2026-10-22T01:33:19.000Z",
+                          "updatedAt": "2026-10-22T01:33:19.000Z",
+                          "uid": "35240-8e89e861-8c24-4457-a82a-865ec2153c29"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-410d0218-4c6d-482d-ab82-9a496f22b90a"
+                    }
+                  ],
+                  "id": "deabdfcf-5ab8-4a60-97f9-597e2fe3b4c3",
+                  "createdAt": "2026-10-22T01:33:19.000Z",
+                  "updatedAt": "2026-10-22T01:33:19.000Z",
+                  "uid": "35240-deabdfcf-5ab8-4a60-97f9-597e2fe3b4c3"
+                },
+                {
+                  "name": "Request a payment credential",
+                  "id": "2d993ff8-89e0-4b44-92ab-2968472bd8fa",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"KZJ\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"9371\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"culpa_c9e\": \"<string>\",\n    \"elit_5\": \"<string>\",\n    \"adipisicingee6\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/mandates/:id/credential-requests",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "mandates",
+                        ":id",
+                        "credential-requests"
+                      ],
+                      "variable": [
+                        {
+                          "id": "4e798c17-7094-49a7-8d5e-81425f1cb167",
+                          "key": "id",
+                          "value": "mnd_",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Request a single-use virtual card to execute a specific purchase against an active mandate. Allowance automatically validates the request against the mandate rules \u2014 amount, merchant, merchant category, and time period. No human approval is needed at this step; the human already approved the mandate.\n\nIf validation passes, a virtual card (PAN, expiry, CVV) is returned. The agent uses these details at merchant checkout like a normal card number. The card is single-use, amount-capped, and short-lived \u2014 safety comes from these constraints, not from hiding credentials.\n\nFor `cadence: \"once\"` mandates, the mandate automatically moves to `exhausted` status after the first virtual card is issued."
+                  },
+                  "response": [
+                    {
+                      "id": "0200cf5e-0332-4c37-b6b7-02bd0adb24e4",
+                      "name": "Credential request processed. Check `validation.passed` for the outcome.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                            "key": "Idempotency-Key",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"KZJ\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"9371\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"culpa_c9e\": \"<string>\",\n    \"elit_5\": \"<string>\",\n    \"adipisicingee6\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/credential-requests",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "credential-requests"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"cr_\",\n  \"mandate_id\": \"mnd_\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"validation\": {\n    \"passed\": \"<boolean>\",\n    \"constraints\": {\n      \"within_amount_limit\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"merchant_match\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"mcc_match\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"within_time_period\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"cadence_not_exhausted\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      },\n      \"velocity_check\": {\n        \"passed\": \"<boolean>\",\n        \"detail\": \"<string>\"\n      }\n    },\n    \"reasons\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"status\": \"approved\",\n  \"created_at\": \"<dateTime>\",\n  \"merchant_category_code\": \"<string>\",\n  \"context\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"in_03_\": \"<string>\"\n  },\n  \"virtual_card\": {\n    \"pan\": \"<string>\",\n    \"expiry_month\": \"<string>\",\n    \"expiry_year\": \"<string>\",\n    \"cvv\": \"<string>\",\n    \"billing_zip\": \"<string>\",\n    \"expires_at\": \"<dateTime>\",\n    \"single_use\": \"<boolean>\",\n    \"network\": \"<string>\",\n    \"amount_limit\": \"<integer>\",\n    \"merchant_lock\": \"<string,null>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-0200cf5e-0332-4c37-b6b7-02bd0adb24e4"
+                    },
+                    {
+                      "id": "d46e222b-a177-41e1-b0b6-64633edf2417",
+                      "name": "Invalid request parameters",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                            "key": "Idempotency-Key",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"KZJ\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"9371\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"culpa_c9e\": \"<string>\",\n    \"elit_5\": \"<string>\",\n    \"adipisicingee6\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/credential-requests",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "credential-requests"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-d46e222b-a177-41e1-b0b6-64633edf2417"
+                    },
+                    {
+                      "id": "c74fc073-da1a-4606-8507-06d73b72a4c4",
+                      "name": "Missing or invalid API key",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                            "key": "Idempotency-Key",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"KZJ\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"9371\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"culpa_c9e\": \"<string>\",\n    \"elit_5\": \"<string>\",\n    \"adipisicingee6\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/credential-requests",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "credential-requests"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-c74fc073-da1a-4606-8507-06d73b72a4c4"
+                    },
+                    {
+                      "id": "ccd2348f-f53e-4716-9f07-974a3dcb62f1",
+                      "name": "Mandate is not active (pending_approval, expired, revoked, or exhausted)",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                            "key": "Idempotency-Key",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"KZJ\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"9371\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"culpa_c9e\": \"<string>\",\n    \"elit_5\": \"<string>\",\n    \"adipisicingee6\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/credential-requests",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "credential-requests"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Conflict",
+                      "code": 409,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-ccd2348f-f53e-4716-9f07-974a3dcb62f1"
+                    },
+                    {
+                      "id": "366654e7-d5ac-4b16-8448-c4783cef69a8",
+                      "name": "Rate limit exceeded",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                            "key": "Idempotency-Key",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"KZJ\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"9371\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"culpa_c9e\": \"<string>\",\n    \"elit_5\": \"<string>\",\n    \"adipisicingee6\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/credential-requests",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "credential-requests"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-RateLimit-Limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-RateLimit-Remaining",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-366654e7-d5ac-4b16-8448-c4783cef69a8"
+                    },
+                    {
+                      "id": "f3673c9f-5432-4e75-8b6a-7c343813fbdc",
+                      "name": "Pre-launch: this endpoint is not yet active",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                            "key": "Idempotency-Key",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Allowance-Key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"KZJ\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"9371\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"culpa_c9e\": \"<string>\",\n    \"elit_5\": \"<string>\",\n    \"adipisicingee6\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/mandates/:id/credential-requests",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "mandates",
+                            ":id",
+                            "credential-requests"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Implemented",
+                      "code": 501,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                      "createdAt": "2026-10-22T01:33:19.000Z",
+                      "updatedAt": "2026-10-22T01:33:19.000Z",
+                      "uid": "35240-f3673c9f-5432-4e75-8b6a-7c343813fbdc"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T01:33:19.000Z",
+                  "updatedAt": "2026-10-22T01:33:19.000Z",
+                  "uid": "35240-2d993ff8-89e0-4b44-92ab-2968472bd8fa"
+                }
+              ],
+              "id": "c229823f-66a6-448f-9d0a-ffac524e6d29",
+              "createdAt": "2026-10-22T01:33:19.000Z",
+              "updatedAt": "2026-10-22T01:33:19.000Z",
+              "uid": "35240-c229823f-66a6-448f-9d0a-ffac524e6d29"
+            },
+            {
+              "name": "Retrieve a mandate",
+              "id": "9cdd271c-ef0a-493d-8d85-cfc8fd1ca76d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/mandates/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "mandates",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "95eb39ca-5b08-4329-8543-03793d55353b",
+                      "key": "id",
+                      "value": "mnd_",
+                      "description": "(Required) Mandate ID (prefix: mnd_)"
+                    }
+                  ]
+                },
+                "description": "Poll this endpoint to check whether the human has approved the mandate (`status: active`). Also use it to check remaining budget and expiry before requesting a credential."
+              },
+              "response": [
+                {
+                  "id": "8bd302d4-8068-4f6b-8ec5-c0beb28e5b72",
+                  "name": "Mandate retrieved",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Allowance-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/mandates/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "mandates",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"mnd_\",\n  \"owner_id\": \"<string>\",\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"never\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"FZL\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"1130\",\n      \"6343\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"status\": \"active\",\n  \"created_at\": \"<dateTime>\",\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"approved_at\": \"<string,null-date-time>\",\n  \"expires_at\": \"<string,null-date-time>\",\n  \"metadata\": {\n    \"dolore__\": \"<string>\",\n    \"ullamco738\": \"<string>\"\n  },\n  \"x-ap2-note\": \"<string>\"\n}",
+                  "createdAt": "2026-10-22T01:33:19.000Z",
+                  "updatedAt": "2026-10-22T01:33:19.000Z",
+                  "uid": "35240-8bd302d4-8068-4f6b-8ec5-c0beb28e5b72"
+                },
+                {
+                  "id": "ff3000d2-d076-406c-9836-d982f347a04d",
+                  "name": "Missing or invalid API key",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Allowance-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/mandates/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "mandates",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                  "createdAt": "2026-10-22T01:33:19.000Z",
+                  "updatedAt": "2026-10-22T01:33:19.000Z",
+                  "uid": "35240-ff3000d2-d076-406c-9836-d982f347a04d"
+                },
+                {
+                  "id": "1995eb39-10f6-466a-8ffc-bc6c55f9f5d8",
+                  "name": "Resource not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Allowance-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/mandates/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "mandates",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                  "createdAt": "2026-10-22T01:33:19.000Z",
+                  "updatedAt": "2026-10-22T01:33:19.000Z",
+                  "uid": "35240-1995eb39-10f6-466a-8ffc-bc6c55f9f5d8"
+                },
+                {
+                  "id": "7c894f20-4d28-4657-b041-51d43a5a4eb4",
+                  "name": "Pre-launch: this endpoint is not yet active",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Allowance-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/mandates/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "mandates",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Implemented",
+                  "code": 501,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+                  "createdAt": "2026-10-22T01:33:19.000Z",
+                  "updatedAt": "2026-10-22T01:33:19.000Z",
+                  "uid": "35240-7c894f20-4d28-4657-b041-51d43a5a4eb4"
+                }
+              ],
+              "createdAt": "2026-10-22T01:33:19.000Z",
+              "updatedAt": "2026-10-22T01:33:19.000Z",
+              "uid": "35240-9cdd271c-ef0a-493d-8d85-cfc8fd1ca76d"
+            }
+          ],
+          "id": "f6e457a6-99fd-47fa-bae9-8665040c96cb",
+          "createdAt": "2026-10-22T01:33:19.000Z",
+          "updatedAt": "2026-10-22T01:33:19.000Z",
+          "uid": "35240-f6e457a6-99fd-47fa-bae9-8665040c96cb"
+        },
+        {
           "name": "Propose a spending mandate",
+          "id": "eb1598d5-8dee-4c6e-819a-ee33e415ee0c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
-            "name": "Propose a spending mandate",
-            "description": {
-              "content": "The agent proposes a mandate with a suggested budget, merchant restrictions, and cadence. The mandate is created with `status: pending_approval` and is not usable until the human owner approves it out-of-band (via push notification, email, or in-app review). The agent should poll `GET /v1/mandates/{id}` to detect when status becomes `active`.",
-              "type": "text/plain"
+            "method": "POST",
+            "header": [
+              {
+                "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"never\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"XHB\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"9485\",\n      \"9238\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"metadata\": {\n    \"qui_f_\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
             },
             "url": {
+              "raw": "{{baseUrl}}/mandates",
+              "host": [
+                "{{baseUrl}}"
+              ],
               "path": [
                 "mandates"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
+              ]
             },
-            "header": [
-              {
-                "disabled": false,
-                "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                "key": "Idempotency-Key",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"<string>\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"<string>\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
+            "description": "The agent proposes a mandate with a suggested budget, merchant restrictions, and cadence. The mandate is created with `status: pending_approval` and is not usable until the human owner approves it out-of-band (via push notification, email, or in-app review). The agent should poll `GET /v1/mandates/{id}` to detect when status becomes `active`."
           },
           "response": [
             {
-              "id": "20a3d853-f2c9-4f11-b28a-cdba93eb01ad",
+              "id": "9ef88096-cda8-4e64-a1b1-0327514cd944",
               "name": "Mandate created in `pending_approval` status",
               "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
+                "method": "POST",
                 "header": [
                   {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
                     "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
                     "key": "Idempotency-Key",
                     "value": "<string>"
                   },
                   {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
                     "key": "Accept",
                     "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Allowance-Key",
+                    "value": "<API Key>"
                   }
                 ],
-                "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"agent_id\": \"agent_claude_travel\",\n  \"budget\": {\n    \"cadence\": \"once\",\n    \"per_transaction_max\": 50000,\n    \"total_max\": 50000,\n    \"currency\": \"USD\",\n    \"merchants\": [\n      \"United Airlines\"\n    ],\n    \"merchant_category_codes\": [\n      \"4511\"\n    ],\n    \"categories\": [\n      \"travel\",\n      \"flights\"\n    ],\n    \"expires_at\": \"2026-02-17T14:30:00Z\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": true,\n    \"block_international\": false\n  },\n  \"metadata\": {\n    \"task\": \"book cheapest flight to NYC under $500\",\n    \"initiated_by\": \"user_voice_command\"\n  }\n}",
+                  "raw": "{\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"never\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"XHB\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"9485\",\n      \"9238\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"metadata\": {\n    \"qui_f_\": \"<string>\"\n  }\n}",
                   "options": {
                     "raw": {
+                      "headerFamily": "json",
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/mandates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "mandates"
+                  ]
                 }
               },
               "status": "Created",
               "code": 201,
+              "_postman_previewlanguage": "json",
               "header": [
                 {
                   "key": "Content-Type",
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"mnd_\",\n  \"owner_id\": \"string\",\n  \"agent_id\": \"string\",\n  \"budget\": {\n    \"cadence\": \"annually\",\n    \"per_transaction_max\": 59,\n    \"currency\": \"FAV\",\n    \"total_max\": 278,\n    \"merchants\": [\n      \"string\",\n      \"string\"\n    ],\n    \"merchant_category_codes\": [\n      \"7698\",\n      \"0840\"\n    ],\n    \"categories\": [\n      \"string\",\n      \"string\"\n    ],\n    \"expires_at\": \"1953-08-23T23:36:53.480Z\"\n  },\n  \"status\": \"exhausted\",\n  \"created_at\": \"1973-12-27T11:16:23.309Z\",\n  \"risk_controls\": {\n    \"require_merchant_match\": true,\n    \"block_international\": true,\n    \"max_daily_spend\": 1645,\n    \"velocity_limit_per_hour\": 4788\n  },\n  \"approved_at\": \"2002-12-01T11:03:18.191Z\",\n  \"expires_at\": \"2020-08-02T06:26:29.752Z\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\"\n  },\n  \"x-ap2-note\": \"string\"\n}",
               "cookie": [],
-              "_postman_previewlanguage": "json"
+              "responseTime": null,
+              "body": "{\n  \"id\": \"mnd_\",\n  \"owner_id\": \"<string>\",\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"never\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"FZL\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"1130\",\n      \"6343\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"status\": \"active\",\n  \"created_at\": \"<dateTime>\",\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"approved_at\": \"<string,null-date-time>\",\n  \"expires_at\": \"<string,null-date-time>\",\n  \"metadata\": {\n    \"dolore__\": \"<string>\",\n    \"ullamco738\": \"<string>\"\n  },\n  \"x-ap2-note\": \"<string>\"\n}",
+              "createdAt": "2026-10-22T01:33:19.000Z",
+              "updatedAt": "2026-10-22T01:33:19.000Z",
+              "uid": "35240-9ef88096-cda8-4e64-a1b1-0327514cd944"
             },
             {
-              "id": "51e928f7-922d-459b-9249-492fe2edb6f8",
+              "id": "43e347a7-f161-462e-83e4-a7896ba91416",
               "name": "Invalid request parameters",
               "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
+                "method": "POST",
                 "header": [
                   {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
                     "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
                     "key": "Idempotency-Key",
                     "value": "<string>"
                   },
                   {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
                     "key": "Accept",
                     "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Allowance-Key",
+                    "value": "<API Key>"
                   }
                 ],
-                "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"agent_id\": \"agent_claude_travel\",\n  \"budget\": {\n    \"cadence\": \"once\",\n    \"per_transaction_max\": 50000,\n    \"total_max\": 50000,\n    \"currency\": \"USD\",\n    \"merchants\": [\n      \"United Airlines\"\n    ],\n    \"merchant_category_codes\": [\n      \"4511\"\n    ],\n    \"categories\": [\n      \"travel\",\n      \"flights\"\n    ],\n    \"expires_at\": \"2026-02-17T14:30:00Z\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": true,\n    \"block_international\": false\n  },\n  \"metadata\": {\n    \"task\": \"book cheapest flight to NYC under $500\",\n    \"initiated_by\": \"user_voice_command\"\n  }\n}",
+                  "raw": "{\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"never\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"XHB\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"9485\",\n      \"9238\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"metadata\": {\n    \"qui_f_\": \"<string>\"\n  }\n}",
                   "options": {
                     "raw": {
+                      "headerFamily": "json",
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/mandates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "mandates"
+                  ]
                 }
               },
               "status": "Bad Request",
               "code": 400,
+              "_postman_previewlanguage": "json",
               "header": [
                 {
                   "key": "Content-Type",
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
               "cookie": [],
-              "_postman_previewlanguage": "json"
+              "responseTime": null,
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+              "createdAt": "2026-10-22T01:33:19.000Z",
+              "updatedAt": "2026-10-22T01:33:19.000Z",
+              "uid": "35240-43e347a7-f161-462e-83e4-a7896ba91416"
             },
             {
-              "id": "b69c8d82-2b1c-4fd1-a1de-f07dc2086d42",
+              "id": "f8626254-481c-4777-8c96-7cad02bfa282",
               "name": "Missing or invalid API key",
               "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Allowance-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"never\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"XHB\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"9485\",\n      \"9238\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"metadata\": {\n    \"qui_f_\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
+                  "raw": "{{baseUrl}}/mandates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
                   "path": [
                     "mandates"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                    "key": "Idempotency-Key",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"agent_id\": \"agent_claude_travel\",\n  \"budget\": {\n    \"cadence\": \"once\",\n    \"per_transaction_max\": 50000,\n    \"total_max\": 50000,\n    \"currency\": \"USD\",\n    \"merchants\": [\n      \"United Airlines\"\n    ],\n    \"merchant_category_codes\": [\n      \"4511\"\n    ],\n    \"categories\": [\n      \"travel\",\n      \"flights\"\n    ],\n    \"expires_at\": \"2026-02-17T14:30:00Z\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": true,\n    \"block_international\": false\n  },\n  \"metadata\": {\n    \"task\": \"book cheapest flight to NYC under $500\",\n    \"initiated_by\": \"user_voice_command\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
+                  ]
                 }
               },
               "status": "Unauthorized",
               "code": 401,
+              "_postman_previewlanguage": "json",
               "header": [
                 {
                   "key": "Content-Type",
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
               "cookie": [],
-              "_postman_previewlanguage": "json"
+              "responseTime": null,
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+              "createdAt": "2026-10-22T01:33:19.000Z",
+              "updatedAt": "2026-10-22T01:33:19.000Z",
+              "uid": "35240-f8626254-481c-4777-8c96-7cad02bfa282"
             },
             {
-              "id": "c4b93e74-27b8-4d90-ad56-0ea97782043a",
+              "id": "85957ea5-23d6-4d05-ae7e-8470e977e371",
               "name": "Pre-launch: this endpoint is not yet active",
               "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Allowance-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agent_id\": \"<string>\",\n  \"budget\": {\n    \"cadence\": \"never\",\n    \"per_transaction_max\": \"<integer>\",\n    \"currency\": \"XHB\",\n    \"total_max\": \"<integer,null>\",\n    \"merchants\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"merchant_category_codes\": [\n      \"9485\",\n      \"9238\"\n    ],\n    \"categories\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"expires_at\": \"<string,null-date-time>\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": \"<boolean>\",\n    \"block_international\": \"<boolean>\",\n    \"max_daily_spend\": \"<integer,null>\",\n    \"velocity_limit_per_hour\": \"<integer,null>\"\n  },\n  \"metadata\": {\n    \"qui_f_\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
+                  "raw": "{{baseUrl}}/mandates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
                   "path": [
                     "mandates"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                    "key": "Idempotency-Key",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"agent_id\": \"agent_claude_travel\",\n  \"budget\": {\n    \"cadence\": \"once\",\n    \"per_transaction_max\": 50000,\n    \"total_max\": 50000,\n    \"currency\": \"USD\",\n    \"merchants\": [\n      \"United Airlines\"\n    ],\n    \"merchant_category_codes\": [\n      \"4511\"\n    ],\n    \"categories\": [\n      \"travel\",\n      \"flights\"\n    ],\n    \"expires_at\": \"2026-02-17T14:30:00Z\"\n  },\n  \"risk_controls\": {\n    \"require_merchant_match\": true,\n    \"block_international\": false\n  },\n  \"metadata\": {\n    \"task\": \"book cheapest flight to NYC under $500\",\n    \"initiated_by\": \"user_voice_command\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
+                  ]
                 }
               },
               "status": "Not Implemented",
               "code": 501,
+              "_postman_previewlanguage": "json",
               "header": [
                 {
                   "key": "Content-Type",
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"error\": {\n    \"code\": \"not_implemented\",\n    \"message\": \"Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.\",\n    \"doc_url\": \"https://useallowance.com/connect-agent\"\n  }\n}",
               "cookie": [],
-              "_postman_previewlanguage": "json"
+              "responseTime": null,
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+              "createdAt": "2026-10-22T01:33:19.000Z",
+              "updatedAt": "2026-10-22T01:33:19.000Z",
+              "uid": "35240-85957ea5-23d6-4d05-ae7e-8470e977e371"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "3aaf41af-bdb0-45bc-8a7c-67921512cd3e",
-          "name": "Retrieve a mandate",
-          "request": {
-            "name": "Retrieve a mandate",
-            "description": {
-              "content": "Poll this endpoint to check whether the human has approved the mandate (`status: active`). Also use it to check remaining budget and expiry before requesting a credential.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "mandates",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) Mandate ID (prefix: mnd_)"
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "093ca77f-b135-45be-9fdd-1520da8c23a4",
-              "name": "Mandate retrieved",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) Mandate ID (prefix: mnd_)"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"mnd_\",\n  \"owner_id\": \"string\",\n  \"agent_id\": \"string\",\n  \"budget\": {\n    \"cadence\": \"annually\",\n    \"per_transaction_max\": 59,\n    \"currency\": \"FAV\",\n    \"total_max\": 278,\n    \"merchants\": [\n      \"string\",\n      \"string\"\n    ],\n    \"merchant_category_codes\": [\n      \"7698\",\n      \"0840\"\n    ],\n    \"categories\": [\n      \"string\",\n      \"string\"\n    ],\n    \"expires_at\": \"1953-08-23T23:36:53.480Z\"\n  },\n  \"status\": \"exhausted\",\n  \"created_at\": \"1973-12-27T11:16:23.309Z\",\n  \"risk_controls\": {\n    \"require_merchant_match\": true,\n    \"block_international\": true,\n    \"max_daily_spend\": 1645,\n    \"velocity_limit_per_hour\": 4788\n  },\n  \"approved_at\": \"2002-12-01T11:03:18.191Z\",\n  \"expires_at\": \"2020-08-02T06:26:29.752Z\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\"\n  },\n  \"x-ap2-note\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "ac1a10f8-c543-4c51-aca8-d67b3d8f3293",
-              "name": "Missing or invalid API key",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) Mandate ID (prefix: mnd_)"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "ab3dc242-6a6e-4a4c-a05a-514b75e410ed",
-              "name": "Resource not found",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) Mandate ID (prefix: mnd_)"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "e9cf6f6d-5718-4137-8b85-ab8bddc61863",
-              "name": "Pre-launch: this endpoint is not yet active",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) Mandate ID (prefix: mnd_)"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Not Implemented",
-              "code": 501,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"not_implemented\",\n    \"message\": \"Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.\",\n    \"doc_url\": \"https://useallowance.com/connect-agent\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "61d2e1f7-2cc6-4965-8d09-50e47fb9db93",
-          "name": "Revoke a mandate",
-          "request": {
-            "name": "Revoke a mandate",
-            "description": {
-              "content": "Immediately revoke an active or pending_approval mandate. Once revoked, no further credential requests will be accepted. Any virtual cards already issued remain valid until their own expires_at — revocation does not cancel in-flight transactions. Only callable by the mandate owner, not the agent.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "mandates",
-                ":id",
-                "revoke"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "0488c297-8546-4102-8e7a-d40b460e0b88",
-              "name": "Mandate revoked",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "revoke"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"mnd_\",\n  \"owner_id\": \"string\",\n  \"agent_id\": \"string\",\n  \"budget\": {\n    \"cadence\": \"annually\",\n    \"per_transaction_max\": 59,\n    \"currency\": \"FAV\",\n    \"total_max\": 278,\n    \"merchants\": [\n      \"string\",\n      \"string\"\n    ],\n    \"merchant_category_codes\": [\n      \"7698\",\n      \"0840\"\n    ],\n    \"categories\": [\n      \"string\",\n      \"string\"\n    ],\n    \"expires_at\": \"1953-08-23T23:36:53.480Z\"\n  },\n  \"status\": \"exhausted\",\n  \"created_at\": \"1973-12-27T11:16:23.309Z\",\n  \"risk_controls\": {\n    \"require_merchant_match\": true,\n    \"block_international\": true,\n    \"max_daily_spend\": 1645,\n    \"velocity_limit_per_hour\": 4788\n  },\n  \"approved_at\": \"2002-12-01T11:03:18.191Z\",\n  \"expires_at\": \"2020-08-02T06:26:29.752Z\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\"\n  },\n  \"x-ap2-note\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "f3372311-5f2b-432c-9fbb-74b7b8dad32f",
-              "name": "Missing or invalid API key",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "revoke"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "8073e81d-06db-4c12-a5a4-662c92e1bb73",
-              "name": "Resource not found",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "revoke"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "e7012adf-e4f5-4617-9481-8abe5cf1b7ec",
-              "name": "Pre-launch: this endpoint is not yet active",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "revoke"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Not Implemented",
-              "code": 501,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"not_implemented\",\n    \"message\": \"Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.\",\n    \"doc_url\": \"https://useallowance.com/connect-agent\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "38395858-08bb-483e-8d31-65ebc94919ae",
-          "name": "Request a payment credential",
-          "request": {
-            "name": "Request a payment credential",
-            "description": {
-              "content": "Request a single-use virtual card to execute a specific purchase against an active mandate. Allowance automatically validates the request against the mandate rules — amount, merchant, merchant category, and time period. No human approval is needed at this step; the human already approved the mandate.\n\nIf validation passes, a virtual card (PAN, expiry, CVV) is returned. The agent uses these details at merchant checkout like a normal card number. The card is single-use, amount-capped, and short-lived — safety comes from these constraints, not from hiding credentials.\n\nFor `cadence: \"once\"` mandates, the mandate automatically moves to `exhausted` status after the first virtual card is issued.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "mandates",
-                ":id",
-                "credential-requests"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                "key": "Idempotency-Key",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "29ff4963-5014-4674-8ec8-7e831878a335",
-              "name": "Credential request processed. Check `validation.passed` for the outcome.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                    "key": "Idempotency-Key",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Created",
-              "code": 201,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"cr_\",\n  \"mandate_id\": \"mnd_\",\n  \"amount\": 5869,\n  \"currency\": \"string\",\n  \"merchant\": \"string\",\n  \"validation\": {\n    \"passed\": true,\n    \"constraints\": {\n      \"within_amount_limit\": {\n        \"passed\": true,\n        \"detail\": \"string\"\n      },\n      \"merchant_match\": {\n        \"passed\": true,\n        \"detail\": \"string\"\n      },\n      \"mcc_match\": {\n        \"passed\": false,\n        \"detail\": \"string\"\n      },\n      \"within_time_period\": {\n        \"passed\": false,\n        \"detail\": \"string\"\n      },\n      \"cadence_not_exhausted\": {\n        \"passed\": true,\n        \"detail\": \"string\"\n      },\n      \"velocity_check\": {\n        \"passed\": false,\n        \"detail\": \"string\"\n      }\n    },\n    \"reasons\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  \"status\": \"expired\",\n  \"created_at\": \"1960-12-16T17:14:05.921Z\",\n  \"merchant_category_code\": \"string\",\n  \"context\": \"string\",\n  \"idempotency_key\": \"string\",\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"virtual_card\": {\n    \"pan\": \"string\",\n    \"expiry_month\": \"string\",\n    \"expiry_year\": \"string\",\n    \"cvv\": \"string\",\n    \"billing_zip\": \"string\",\n    \"expires_at\": \"1954-11-24T00:50:33.163Z\",\n    \"single_use\": true,\n    \"network\": \"string\",\n    \"amount_limit\": 8022,\n    \"merchant_lock\": \"string\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "f20ad65a-6ac8-4328-897a-026c9864f602",
-              "name": "Invalid request parameters",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                    "key": "Idempotency-Key",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "36a8d571-df36-4a11-8275-b49968ab9af4",
-              "name": "Missing or invalid API key",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                    "key": "Idempotency-Key",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "7a1b2d8c-881c-4abc-bbb7-e999e10600b9",
-              "name": "Mandate is not active (pending_approval, expired, revoked, or exhausted)",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                    "key": "Idempotency-Key",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "a30a8a3e-ac7f-42b4-bad8-722f4882e00d",
-              "name": "Rate limit exceeded",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                    "key": "Idempotency-Key",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Too Many Requests",
-              "code": 429,
-              "header": [
-                {
-                  "disabled": false,
-                  "key": "Retry-After",
-                  "value": "1835",
-                  "description": ""
-                },
-                {
-                  "disabled": false,
-                  "key": "X-RateLimit-Limit",
-                  "value": "1835",
-                  "description": ""
-                },
-                {
-                  "disabled": false,
-                  "key": "X-RateLimit-Remaining",
-                  "value": "1835",
-                  "description": ""
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "ac83d455-a9e2-4804-8cf6-74e9da6e010a",
-              "name": "Pre-launch: this endpoint is not yet active",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Client-generated unique key. Same key returns the same response without re-executing the operation. Always set this on credential requests.",
-                    "key": "Idempotency-Key",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"context\": \"<string>\",\n  \"merchant_category_code\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Not Implemented",
-              "code": 501,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"not_implemented\",\n    \"message\": \"Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.\",\n    \"doc_url\": \"https://useallowance.com/connect-agent\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "bc8a4380-d0b4-4e84-9355-de8590b10a37",
-          "name": "Retrieve a credential request",
-          "request": {
-            "name": "Retrieve a credential request",
-            "description": {},
-            "url": {
-              "path": [
-                "mandates",
-                ":id",
-                "credential-requests",
-                ":cr_id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                },
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "cr_id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "d4c86145-5d47-4e8d-883a-15e6c3e6a645",
-              "name": "Credential request retrieved",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests",
-                    ":cr_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "cr_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"cr_\",\n  \"mandate_id\": \"mnd_\",\n  \"amount\": 5869,\n  \"currency\": \"string\",\n  \"merchant\": \"string\",\n  \"validation\": {\n    \"passed\": true,\n    \"constraints\": {\n      \"within_amount_limit\": {\n        \"passed\": true,\n        \"detail\": \"string\"\n      },\n      \"merchant_match\": {\n        \"passed\": true,\n        \"detail\": \"string\"\n      },\n      \"mcc_match\": {\n        \"passed\": false,\n        \"detail\": \"string\"\n      },\n      \"within_time_period\": {\n        \"passed\": false,\n        \"detail\": \"string\"\n      },\n      \"cadence_not_exhausted\": {\n        \"passed\": true,\n        \"detail\": \"string\"\n      },\n      \"velocity_check\": {\n        \"passed\": false,\n        \"detail\": \"string\"\n      }\n    },\n    \"reasons\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  \"status\": \"expired\",\n  \"created_at\": \"1960-12-16T17:14:05.921Z\",\n  \"merchant_category_code\": \"string\",\n  \"context\": \"string\",\n  \"idempotency_key\": \"string\",\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"virtual_card\": {\n    \"pan\": \"string\",\n    \"expiry_month\": \"string\",\n    \"expiry_year\": \"string\",\n    \"cvv\": \"string\",\n    \"billing_zip\": \"string\",\n    \"expires_at\": \"1954-11-24T00:50:33.163Z\",\n    \"single_use\": true,\n    \"network\": \"string\",\n    \"amount_limit\": 8022,\n    \"merchant_lock\": \"string\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "e4223033-02f9-4b4b-a1e7-fa6fef93d83c",
-              "name": "Missing or invalid API key",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests",
-                    ":cr_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "cr_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "32e486ea-821c-4295-a9bf-8a30ad44f2ac",
-              "name": "Resource not found",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests",
-                    ":cr_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "cr_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"param\": \"string\",\n    \"doc_url\": \"https://tfXtR.epzvXvT0pzQqQMgDLAZ\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "7ffd3a0d-6aca-414b-ab51-1445c8497fa4",
-              "name": "Pre-launch: this endpoint is not yet active",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "mandates",
-                    ":id",
-                    "credential-requests",
-                    ":cr_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "cr_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Not Implemented",
-              "code": 501,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"error\": {\n    \"code\": \"not_implemented\",\n    \"message\": \"Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.\",\n    \"doc_url\": \"https://useallowance.com/connect-agent\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "createdAt": "2026-10-22T01:33:19.000Z",
+          "updatedAt": "2026-10-22T01:33:19.000Z",
+          "uid": "35240-eb1598d5-8dee-4c6e-819a-ee33e415ee0c"
         }
       ],
-      "event": []
-    }
-  ],
-  "event": [],
-  "variable": [
-    {
-      "type": "string",
-      "value": "https://api.useallowance.com/v1",
-      "key": "baseUrl"
+      "id": "19f88fec-2a54-448d-b41d-4930d9d4228f",
+      "createdAt": "2026-10-22T01:33:19.000Z",
+      "updatedAt": "2026-10-22T01:33:19.000Z",
+      "uid": "35240-19f88fec-2a54-448d-b41d-4930d9d4228f"
     }
   ],
   "auth": {
@@ -1594,25 +1578,25 @@
     "apikey": [
       {
         "key": "key",
-        "value": "X-Allowance-Key"
+        "value": "X-Allowance-Key",
+        "type": "string"
       },
       {
         "key": "value",
-        "value": "{{apiKey}}"
+        "value": "{{apiKey}}",
+        "type": "string"
       },
       {
         "key": "in",
-        "value": "header"
+        "value": "header",
+        "type": "string"
       }
     ]
   },
-  "info": {
-    "_postman_id": "4c8df376-23a5-47c3-8634-d7b600d44119",
-    "name": "Allowance Mandates API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": {
-      "content": "Consumer trust layer for AI agent payments.\n\n## How it works\n\n1. **Agent proposes a mandate.** The agent calls `POST /v1/mandates` with a suggested amount, merchant, and cadence. The mandate starts in `pending_approval` status.\n2. **Human approves the mandate.** The mandate owner receives a notification (push, email, or in-app) and approves it. The mandate becomes `active`. The agent never triggers this step — it waits.\n3. **Agent requests a virtual card.** When a purchase is needed, the agent calls `POST /v1/mandates/{id}/credential-requests`. Allowance automatically validates the request against the mandate rules (amount, merchant, time period). No human involvement. If valid, a single-use virtual card (PAN, expiry, CVV) is returned — the agent uses it like a card number at checkout. If not, the request is denied with reasons.\n4. **Mandate lifecycle.** For `cadence: \"once\"` (immediate) mandates, the mandate auto-expires after the first virtual card is issued. For recurring mandates, the mandate stays active and the agent can request a new virtual card on each purchase cycle within the defined rules.\n\n## AP2 compatibility\n\nThis API is designed to be a natural precursor to the [AP2 Agent Payments Protocol](https://ap2-protocol.org). The Allowance mandate maps directly to AP2's Intent Mandate (human-not-present scenario). In a future AP2-compatible version, the mandate will be a cryptographically signed Verifiable Digital Credential (VDC), and human approval will produce a non-repudiable cryptographic attestation rather than an in-system state change. The same concepts and fields carry forward.\n\n**Status: Pre-launch.** All endpoints return `501 Not Implemented`. Contact hello@useallowance.com for early access.\n\nContact Support:\n Name: Allowance\n Email: hello@useallowance.com",
-      "type": "text/plain"
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.useallowance.com/v1"
     }
-  }
+  ]
 }

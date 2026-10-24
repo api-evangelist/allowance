@@ -1,144 +1,138 @@
 {
+  "info": {
+    "_postman_id": "f9a03b14-bbee-48cc-948c-ae6515d94653",
+    "name": "Allowance Status API",
+    "description": "Consumer trust layer for AI agent payments.\n\nContact Support:\n Name: Allowance\n Email: hello@useallowance.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T01:33:32.000Z",
+    "updatedAt": "2026-10-22T01:33:32.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f9a03b14-bbee-48cc-948c-ae6515d94653"
+  },
   "item": [
     {
-      "id": "90958ec5-093b-481f-987d-49959600ffc0",
-      "name": "Status",
-      "description": {
-        "content": "",
-        "type": "text/plain"
-      },
+      "name": "status",
       "item": [
         {
-          "id": "ca20b6f4-e06e-4a3c-84f2-b70e3e697681",
           "name": "Health check",
+          "id": "d8caef4e-b12c-453f-96b0-21318676ca6e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
-            "name": "Health check",
-            "description": {
-              "content": "Mirrors https://useallowance.com/status.json.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "status"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
+            "method": "GET",
             "header": [
               {
                 "key": "Accept",
                 "value": "application/json"
               }
             ],
-            "method": "GET",
-            "auth": null
+            "url": {
+              "raw": "{{baseUrl}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "status"
+              ]
+            },
+            "description": "Mirrors https://useallowance.com/status.json."
           },
           "response": [
             {
-              "id": "9bbbc4e2-4cb9-4cd3-bf06-52f6f84a7171",
+              "id": "81b0ffff-9028-49fa-82ca-f63c2906d84c",
               "name": "System status",
               "originalRequest": {
-                "url": {
-                  "path": [
-                    "status"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
+                "method": "GET",
                 "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
                   {
                     "key": "Accept",
                     "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Allowance-Key",
+                    "value": "<API Key>"
                   }
                 ],
-                "method": "GET",
-                "body": {}
+                "url": {
+                  "raw": "{{baseUrl}}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "status"
+                  ]
+                }
               },
               "status": "OK",
               "code": 200,
+              "_postman_previewlanguage": "json",
               "header": [
                 {
                   "key": "Content-Type",
                   "value": "application/json"
                 }
               ],
-              "body": "{}",
               "cookie": [],
-              "_postman_previewlanguage": "json"
+              "responseTime": null,
+              "body": "{}",
+              "createdAt": "2026-10-22T01:33:32.000Z",
+              "updatedAt": "2026-10-22T01:33:32.000Z",
+              "uid": "35240-81b0ffff-9028-49fa-82ca-f63c2906d84c"
             },
             {
-              "id": "f06a1b07-cf53-41bd-8413-3ff53dd4f6d7",
+              "id": "28b9e102-9ea7-4c6c-aea4-2789da91d86e",
               "name": "Pre-launch: this endpoint is not yet active",
               "originalRequest": {
-                "url": {
-                  "path": [
-                    "status"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
+                "method": "GET",
                 "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-Allowance-Key",
-                    "value": "<API Key>"
-                  },
                   {
                     "key": "Accept",
                     "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Allowance-Key",
+                    "value": "<API Key>"
                   }
                 ],
-                "method": "GET",
-                "body": {}
+                "url": {
+                  "raw": "{{baseUrl}}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "status"
+                  ]
+                }
               },
               "status": "Not Implemented",
               "code": 501,
+              "_postman_previewlanguage": "json",
               "header": [
                 {
                   "key": "Content-Type",
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"error\": {\n    \"code\": \"not_implemented\",\n    \"message\": \"Allowance is pre-launch. This endpoint is not yet active. Contact hello@useallowance.com for early access.\",\n    \"doc_url\": \"https://useallowance.com/connect-agent\"\n  }\n}",
               "cookie": [],
-              "_postman_previewlanguage": "json"
+              "responseTime": null,
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"<string>\",\n    \"doc_url\": \"<uri>\"\n  }\n}",
+              "createdAt": "2026-10-22T01:33:32.000Z",
+              "updatedAt": "2026-10-22T01:33:32.000Z",
+              "uid": "35240-28b9e102-9ea7-4c6c-aea4-2789da91d86e"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "createdAt": "2026-10-22T01:33:32.000Z",
+          "updatedAt": "2026-10-22T01:33:32.000Z",
+          "uid": "35240-d8caef4e-b12c-453f-96b0-21318676ca6e"
         }
       ],
-      "event": []
-    }
-  ],
-  "event": [],
-  "variable": [
-    {
-      "type": "string",
-      "value": "https://api.useallowance.com/v1",
-      "key": "baseUrl"
+      "id": "7192ea46-b97b-4acb-a89d-c169db8c55e4",
+      "createdAt": "2026-10-22T01:33:32.000Z",
+      "updatedAt": "2026-10-22T01:33:32.000Z",
+      "uid": "35240-7192ea46-b97b-4acb-a89d-c169db8c55e4"
     }
   ],
   "auth": {
@@ -146,25 +140,25 @@
     "apikey": [
       {
         "key": "key",
-        "value": "X-Allowance-Key"
+        "value": "X-Allowance-Key",
+        "type": "string"
       },
       {
         "key": "value",
-        "value": "{{apiKey}}"
+        "value": "{{apiKey}}",
+        "type": "string"
       },
       {
         "key": "in",
-        "value": "header"
+        "value": "header",
+        "type": "string"
       }
     ]
   },
-  "info": {
-    "_postman_id": "f2f0519b-5ae6-46fd-90ae-3ba524f9feb7",
-    "name": "Allowance Mandates Status API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": {
-      "content": "Consumer trust layer for AI agent payments.\n\n## How it works\n\n1. **Agent proposes a mandate.** The agent calls `POST /v1/mandates` with a suggested amount, merchant, and cadence. The mandate starts in `pending_approval` status.\n2. **Human approves the mandate.** The mandate owner receives a notification (push, email, or in-app) and approves it. The mandate becomes `active`. The agent never triggers this step — it waits.\n3. **Agent requests a virtual card.** When a purchase is needed, the agent calls `POST /v1/mandates/{id}/credential-requests`. Allowance automatically validates the request against the mandate rules (amount, merchant, time period). No human involvement. If valid, a single-use virtual card (PAN, expiry, CVV) is returned — the agent uses it like a card number at checkout. If not, the request is denied with reasons.\n4. **Mandate lifecycle.** For `cadence: \"once\"` (immediate) mandates, the mandate auto-expires after the first virtual card is issued. For recurring mandates, the mandate stays active and the agent can request a new virtual card on each purchase cycle within the defined rules.\n\n## AP2 compatibility\n\nThis API is designed to be a natural precursor to the [AP2 Agent Payments Protocol](https://ap2-protocol.org). The Allowance mandate maps directly to AP2's Intent Mandate (human-not-present scenario). In a future AP2-compatible version, the mandate will be a cryptographically signed Verifiable Digital Credential (VDC), and human approval will produce a non-repudiable cryptographic attestation rather than an in-system state change. The same concepts and fields carry forward.\n\n**Status: Pre-launch.** All endpoints return `501 Not Implemented`. Contact hello@useallowance.com for early access.\n\nContact Support:\n Name: Allowance\n Email: hello@useallowance.com",
-      "type": "text/plain"
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.useallowance.com/v1"
     }
-  }
+  ]
 }
