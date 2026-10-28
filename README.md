@@ -64,6 +64,142 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Allowance is a company surfaced as a portfolio company of y-combinator and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Allowance is a consumer trust layer for AI agent payments, backed by Y Combinator. It lets people give AI agents limited, revocable spending power without ever sharing a real credit card number. An agent proposes a spending mandate (a permission object with a budget, merchant and category restrictions, and a time limit); the human owner approves it from the Allowance iOS app; and Allowance then issues single-use virtual cards (PAN, expiry, CVV) that are amount-capped, merchant-locked, and short-lived so the agent can complete checkout autonomously within the approved rules. Allowance exposes a pre-launch OpenAPI 3.1 REST API, a hosted remote MCP server, a published agent SKILL.md, a CLI (PyPI and npm), plus ChatGPT and Claude connectors. The mandate model is designed as a natural precursor to the AP2 Agent Payments Protocol.
 
-Backed by: y-combinator
+**Areas:** Company · Payments · Agentic Payments · AI Agents · Virtual Cards · Fintech · MCP · Consumer Trust · Spending Controls · AP2
+
+## Allowance on APIs.io
+
+Everything profiled for Allowance is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/allowance/](https://apis.io/providers/allowance/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [Allowance Mandates API](https://apis.io/apis/allowance/allowance-mandates-api/) — The Mandates API from Allowance — 5 operation(s) for mandates.
+- [Allowance Pricing API](https://apis.io/apis/allowance/allowance-pricing-api/) — The Pricing API from Allowance — 1 operation(s) for pricing.
+- [Allowance Status API](https://apis.io/apis/allowance/allowance-status-api/) — The Status API from Allowance — 1 operation(s) for status.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Arazzo workflows (1)
+
+Multi-step workflows that chain operations into a business task.
+
+- [Approve a mandate and issue a virtual card](https://apis.io/arazzos/allowance/allowance-mandate-to-card/)
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Allowance Webhooks](https://apis.io/asyncapis/allowance/allowance-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [allowance](https://apis.io/servers/allowance/allowance/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Allowance Agentic Access](https://apis.io/agentic-access/allowance/allowance-agentic-access/)
+
+#### Collections (3)
+
+Postman and Open Collection request collections.
+
+- [Allowance Mandates API](https://apis.io/collections/allowance/open-allowance-mandates-api/)
+- [Allowance Mandates Pricing API](https://apis.io/collections/allowance/open-allowance-pricing-api/)
+- [Allowance Mandates Status API](https://apis.io/collections/allowance/open-allowance-status-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Allowance Openapi Overlay](https://apis.io/overlays/allowance/allowance-openapi-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Allowance Authentication](https://apis.io/security/allowance/allowance-authentication/)
+- [Allowance Domain Security](https://apis.io/security/allowance/allowance-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Allowance Scopes](https://apis.io/scopes/allowance/allowance-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://useallowance.com/)
+- [Documentation](https://useallowance.com/connect-agent)
+- [Getting started](https://useallowance.com/connect-agent)
+- [API reference](https://useallowance.com/openapi.json)
+- [Pricing](https://useallowance.com/pricing.json)
+- [Sign up](https://apps.apple.com/us/app/allowance-agent-wallet/id6762312262)
+- [Support](https://useallowance.com/support)
+- [Blog](https://useallowance.com/blog/)
+- [Terms of service](https://useallowance.com/terms)
+- [Privacy policy](https://useallowance.com/privacy)
+- [Status](https://useallowance.com/status.json)
+
+## API Evangelist rating
+
+**Kin Score 52.1** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 55.5 |
+| Contract governance | 4.5 |
+| Operational transparency | 23.7 |
+| Developer ergonomics | 71.4 |
+| Access clarity | 44.7 |
+
+**Agent readiness 67.6** — agent-native
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | verified |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | verified |
+| Event Surface Described | yes |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 31.3** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/allowance/](https://apis.io/providers/allowance/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Allowance: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/allowance/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
